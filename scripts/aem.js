@@ -115,6 +115,32 @@ function decorateIcon(elem) {
 }
 
 /**
+ * Builds hero block and prepends to main in a new section.
+ * @param {Element} main The container element
+ */
+function buildHeroBlock() {
+  const main = document.querySelector('main');
+  const h1 = main.querySelector('main h1');
+  const picture = main.querySelector('main p > picture');
+
+  if (
+    h1 &&
+    picture &&
+    h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING
+  ) {
+    const section = document.createElement('div');
+    section.classList.add('hero');
+    section.append(picture.cloneNode(true));
+    section.append(h1.cloneNode(true));
+
+    picture.parentElement.remove();
+    h1.remove();
+
+    main.prepend(section);
+  }
+}
+
+/**
  * log RUM if part of the sample.
  * @param {string} checkpoint identifies the checkpoint in funnel
  * @param {Object} data additional data for RUM sample
@@ -349,6 +375,9 @@ export default async function initialize() {
 
   // Eager load first image
   loadEagerImages();
+
+  // Build hero block
+  buildHeroBlock();
 
   // Preload fragments
   await Promise.allSettled(
