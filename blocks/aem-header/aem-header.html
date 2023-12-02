@@ -1,0 +1,33 @@
+<template>
+  <style>
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--nav-height);
+      gap: 1rem;
+      padding: 0 1rem;
+    }
+
+    .brand {
+      text-align: left;
+    }
+
+    .sections {
+      flex-grow: 1;
+    }
+  </style>
+
+  <header>
+    <nav>
+      <div class="nav-hamburger">
+        <button type="button" aria-controls="nav" aria-label="Open navigation">
+          <span class="icon nav-hamburger-icon"></span>
+        </button>
+      </div>
+      <slot name="brand" class="brand"></slot>
+      <slot name="sections" class="sections"></slot>
+      <slot name="tools" class="tools"></slot>
+    </nav>
+  </header>
+</template>
