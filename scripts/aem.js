@@ -4,36 +4,39 @@
  * @returns {Promise<HTMLTemplateElement>} The template
  */
 async function loadTemplate(blockName) {
-  const href = `/blocks/${blockName}/${blockName}.html`;
+  const href = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.html`;
 
   return new Promise((resolve, reject) => {
     const id = href.split('/').pop().split('.').shift();
 
-    if (!document.querySelector(`body > template[id="${id}"]`)) {
-      fetch(href).then((response) => {
-        if (response.ok) {
-          response
-            .text()
-            .then((text) => {
-              const container = document.createElement('div');
+    const block = document.querySelector(`template[id="${id}"]`);
 
-              container.innerHTML = text.trim();
-
-              const html = container.firstChild;
-
-              if (html) {
-                html.id = id;
-                document.body.append(html);
-              }
-            })
-            .finally(resolve);
-        } else {
-          reject();
-        }
-      });
-    } else {
+    if (block) {
       resolve();
+      return;
     }
+
+    fetch(href).then((response) => {
+      if (response.ok) {
+        response
+          .text()
+          .then((text) => {
+            const container = document.createElement('div');
+
+            container.innerHTML = text.trim();
+
+            const html = container.firstChild;
+
+            if (html) {
+              html.id = id;
+              document.body.append(html);
+            }
+          })
+          .finally(resolve);
+      } else {
+        reject();
+      }
+    });
   });
 }
 
@@ -43,7 +46,7 @@ async function loadTemplate(blockName) {
  * @returns {Promise<HTMLElement>} The block
  */
 async function loadBlock(blockName) {
-  const href = `/blocks/${blockName}/${blockName}.js`;
+  const href = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
 
   return new Promise((resolve, reject) => {
     import(href)
@@ -59,9 +62,56 @@ async function loadBlock(blockName) {
         // eslint-disable-next-line no-console
         console.warn(`Failed to load module for ${blockName}`);
         reject(error);
-      })
-      
+      });
   });
+}
+
+/**
+ * Loads a CSS file.
+ * @param {string} href URL to the CSS file
+ */
+async function loadCSS(href) {
+  return new Promise((resolve, reject) => {
+    if (!document.querySelector(`head > link[href="${href}"]`)) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      link.onload = resolve;
+      link.onerror = reject;
+      document.head.append(link);
+    } else {
+      resolve();
+    }
+  });
+}
+
+/**
+ * load fonts.css and set a session storage flag
+ */
+async function loadFonts() {
+  await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+
+  try {
+    if (!window.location.hostname.includes('localhost'))
+      sessionStorage.setItem('fonts-loaded', 'true');
+  } catch (e) {
+    // do nothing
+  }
+}
+
+/**
+ * Add <img> for icon, prefixed with codeBasePath and optional prefix.
+ * @param {span} [element] span element with icon classes
+ */
+function decorateIcon(elem) {
+  const iconName = Array.from(elem.classList)
+    .find((c) => c.startsWith('icon-'))
+    .substring(5);
+  const img = document.createElement('img');
+  img.dataset.iconName = iconName;
+  img.src = `${window.hlx.codeBasePath}/icons/${iconName}.svg`;
+  img.loading = 'lazy';
+  elem.append(img);
 }
 
 /**
@@ -76,11 +126,13 @@ async function loadBlock(blockName) {
 function sampleRUM(checkpoint, data = {}) {
   sampleRUM.defer = sampleRUM.defer || [];
   const defer = (fnname) => {
-    sampleRUM[fnname] = sampleRUM[fnname]
-      || ((...args) => sampleRUM.defer.push({ fnname, args }));
+    sampleRUM[fnname] =
+      sampleRUM[fnname] ||
+      ((...args) => sampleRUM.defer.push({ fnname, args }));
   };
-  sampleRUM.drain = sampleRUM.drain
-    || ((dfnname, fn) => {
+  sampleRUM.drain =
+    sampleRUM.drain ||
+    ((dfnname, fn) => {
       sampleRUM[dfnname] = fn;
       sampleRUM.defer
         .filter(({ fnname }) => dfnname === fnname)
@@ -100,7 +152,9 @@ function sampleRUM(checkpoint, data = {}) {
     if (!window.hlx.rum) {
       const usp = new URLSearchParams(window.location.search);
       const weight = usp.get('rum') === 'on' ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
-      const id = Array.from({ length: 75 }, (_, i) => String.fromCharCode(48 + i))
+      const id = Array.from({ length: 75 }, (_, i) =>
+        String.fromCharCode(48 + i)
+      )
         .filter((a) => /\d|[A-Z]/i.test(a))
         .filter(() => Math.random() * 75 > 70)
         .join('');
@@ -150,7 +204,7 @@ function sampleRUM(checkpoint, data = {}) {
             t: Date.now() - firstReadTime,
             ...data,
           },
-          knownProperties,
+          knownProperties
         );
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
@@ -163,7 +217,8 @@ function sampleRUM(checkpoint, data = {}) {
         lazy: () => {
           // use classic script to avoid CORS issues
           const script = document.createElement('script');
-          script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
+          script.src =
+            'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
           document.head.appendChild(script);
           return true;
         },
@@ -188,13 +243,14 @@ function setup() {
   window.hlx = window.hlx || {};
   window.hlx.RUM_MASK_URL = 'full';
   window.hlx.codeBasePath = '';
-  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
+  window.hlx.lighthouse =
+    new URLSearchParams(window.location.search).get('lighthouse') === 'on';
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {
     try {
       [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split(
-        '/scripts/scripts.js',
+        '/scripts/scripts.js'
       );
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -204,12 +260,12 @@ function setup() {
 }
 
 /** Eager load first image */
-function eagerLoadFirstImage() {
+function loadEagerImages() {
+  // on load, eager load if image is majorly visible in the viewport
   const images = document.querySelectorAll('img');
 
   images.forEach((img) => {
-    // on load, eager load if image is majorly visible in the viewport
-    const visible = img.getBoundingClientRect().top < (window.innerHeight / 1.5);
+    const visible = img.getBoundingClientRect().top < window.innerHeight / 1.5;
 
     if (visible) {
       img.setAttribute('loading', 'eager');
@@ -218,7 +274,9 @@ function eagerLoadFirstImage() {
 }
 
 function transformToCustomElement(block) {
-  const tagName = `aem-${block.getAttribute('class') || block.tagName.toLowerCase()}`;
+  const tagName = `aem-${
+    block.getAttribute('class') || block.tagName.toLowerCase()
+  }`;
   const customElement = document.createElement(tagName);
 
   customElement.innerHTML = block.innerHTML;
@@ -237,17 +295,27 @@ function getBlockResources() {
   const components = new Set();
   const templates = new Set();
 
-  document.querySelectorAll('header, footer, div[class]:not(.fragment)').forEach((block) => {
-    const customElement = transformToCustomElement(block);
-    const tagName = customElement.tagName.toLowerCase();
+  document
+    .querySelectorAll('header, footer, div[class]:not(.fragment)')
+    .forEach((block) => {
+      const status = block.dataset.status;
 
-    components.add(tagName);
+      if (status === 'loading' || status === 'loaded') return;
 
-    // only add templates for non-metadata blocks
-    if (!tagName.endsWith('-metadata')) {
-      templates.add(tagName);
-    }
-  });
+      block.dataset.status = 'loading';
+
+      const customElement = transformToCustomElement(block);
+      const tagName = customElement.tagName.toLowerCase();
+
+      components.add(tagName);
+
+      // only add templates for non-metadata blocks
+      if (!tagName.endsWith('-metadata')) {
+        templates.add(tagName);
+      }
+
+      block.dataset.status = 'loaded';
+    });
 
   return { components, templates };
 }
@@ -277,11 +345,15 @@ async function preloadFragment(element) {
  * Initializiation.
  */
 export default async function initialize() {
+  setup();
+
   // Eager load first image
-  eagerLoadFirstImage();
+  loadEagerImages();
 
   // Preload fragments
-  await Promise.allSettled([...document.querySelectorAll('.fragment')].map(preloadFragment));
+  await Promise.allSettled(
+    [...document.querySelectorAll('.fragment')].map(preloadFragment)
+  );
 
   // Load block resources
   const { components, templates } = getBlockResources();
@@ -304,8 +376,10 @@ export default async function initialize() {
   // Page is fully loaded
   document.body.dataset.status = 'loaded';
 
+  // load fonts
+  loadFonts();
+
   // rest of EDS setup...
-  setup();
   sampleRUM('top');
 
   window.addEventListener('load', () => sampleRUM('load'));
@@ -356,5 +430,24 @@ export class Block extends HTMLElement {
         // this.innerHTML = '';
       }
     });
+
+    // Set up MutationObserver to detect changes in child nodes
+    this.observer = new MutationObserver((event) => {
+      event.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          // decorate added nodes
+          node.querySelectorAll('.icon').forEach(decorateIcon);
+        });
+      });
+    });
+  }
+
+  connectedCallback() {
+    // Start observing child nodes, including subtrees
+    this.observer.observe(this, { childList: true, subtree: true });
+  }
+
+  disconnectCallback() {
+    this.observer.disconnect();
   }
 }
