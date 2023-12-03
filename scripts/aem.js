@@ -402,8 +402,8 @@ export default async function initialize() {
     }
   });
 
-  // Add sections class to all reminder main > div
-  document.querySelectorAll('main > *').forEach((section) => {
+  // Add sections class to all parent divs
+  document.querySelectorAll('main > div').forEach((section) => {
     section.classList.add('section');
   });
 
@@ -464,6 +464,8 @@ export class Block extends HTMLElement {
         // this.innerHTML = '';
       }
     });
+
+    this.innerHTML = '';
 
     // Set up MutationObserver to detect changes in child nodes
     this.observer = new MutationObserver((event) => {
