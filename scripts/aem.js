@@ -92,8 +92,7 @@ async function loadFonts() {
   await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
 
   try {
-    if (!window.location.hostname.includes('localhost'))
-      sessionStorage.setItem('fonts-loaded', 'true');
+    if (!window.location.hostname.includes('localhost')) { sessionStorage.setItem('fonts-loaded', 'true'); }
   } catch (e) {
     // do nothing
   }
@@ -128,19 +127,19 @@ function decorateButton(a) {
     if (a.querySelector('img')) return;
 
     if (
-      up.childNodes.length === 1 &&
-      up.tagName === 'STRONG' &&
-      twoup.childNodes.length === 1 &&
-      twoup.tagName === 'P'
+      up.childNodes.length === 1
+      && up.tagName === 'STRONG'
+      && twoup.childNodes.length === 1
+      && twoup.tagName === 'P'
     ) {
       a.className = 'button primary';
     }
 
     if (
-      up.childNodes.length === 1 &&
-      up.tagName === 'EM' &&
-      twoup.childNodes.length === 1 &&
-      twoup.tagName === 'P'
+      up.childNodes.length === 1
+      && up.tagName === 'EM'
+      && twoup.childNodes.length === 1
+      && twoup.tagName === 'P'
     ) {
       a.className = 'button secondary';
     }
@@ -157,9 +156,10 @@ function buildHeroBlock() {
   const picture = main.querySelector('main p > picture');
 
   if (
-    h1 &&
-    picture &&
-    h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING
+    h1
+    && picture
+    // eslint-disable-next-line no-bitwise
+    && h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING
   ) {
     const section = document.createElement('div');
     section.classList.add('hero');
@@ -185,13 +185,11 @@ function buildHeroBlock() {
 function sampleRUM(checkpoint, data = {}) {
   sampleRUM.defer = sampleRUM.defer || [];
   const defer = (fnname) => {
-    sampleRUM[fnname] =
-      sampleRUM[fnname] ||
-      ((...args) => sampleRUM.defer.push({ fnname, args }));
+    sampleRUM[fnname] = sampleRUM[fnname]
+      || ((...args) => sampleRUM.defer.push({ fnname, args }));
   };
-  sampleRUM.drain =
-    sampleRUM.drain ||
-    ((dfnname, fn) => {
+  sampleRUM.drain = sampleRUM.drain
+    || ((dfnname, fn) => {
       sampleRUM[dfnname] = fn;
       sampleRUM.defer
         .filter(({ fnname }) => dfnname === fnname)
@@ -211,9 +209,7 @@ function sampleRUM(checkpoint, data = {}) {
     if (!window.hlx.rum) {
       const usp = new URLSearchParams(window.location.search);
       const weight = usp.get('rum') === 'on' ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
-      const id = Array.from({ length: 75 }, (_, i) =>
-        String.fromCharCode(48 + i)
-      )
+      const id = Array.from({ length: 75 }, (_, i) => String.fromCharCode(48 + i))
         .filter((a) => /\d|[A-Z]/i.test(a))
         .filter(() => Math.random() * 75 > 70)
         .join('');
@@ -263,7 +259,7 @@ function sampleRUM(checkpoint, data = {}) {
             t: Date.now() - firstReadTime,
             ...data,
           },
-          knownProperties
+          knownProperties,
         );
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
@@ -276,8 +272,7 @@ function sampleRUM(checkpoint, data = {}) {
         lazy: () => {
           // use classic script to avoid CORS issues
           const script = document.createElement('script');
-          script.src =
-            'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
+          script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
           document.head.appendChild(script);
           return true;
         },
@@ -302,14 +297,13 @@ function setup() {
   window.hlx = window.hlx || {};
   window.hlx.RUM_MASK_URL = 'full';
   window.hlx.codeBasePath = '';
-  window.hlx.lighthouse =
-    new URLSearchParams(window.location.search).get('lighthouse') === 'on';
+  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {
     try {
       [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split(
-        '/scripts/scripts.js'
+        '/scripts/scripts.js',
       );
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -333,9 +327,7 @@ function loadEagerImages() {
 }
 
 function transformToCustomElement(block) {
-  const tagName = `aem-${
-    block.getAttribute('class') || block.tagName.toLowerCase()
-  }`;
+  const tagName = `aem-${block.getAttribute('class') || block.tagName.toLowerCase()}`;
   const customElement = document.createElement(tagName);
 
   customElement.innerHTML = block.innerHTML;
@@ -357,7 +349,7 @@ function getBlockResources() {
   document
     .querySelectorAll('header, footer, div[class]:not(.fragment)')
     .forEach((block) => {
-      const status = block.dataset.status;
+      const { status } = block.dataset;
 
       if (status === 'loading' || status === 'loaded') return;
 
@@ -414,7 +406,7 @@ export default async function initialize() {
 
   // Preload fragments
   await Promise.allSettled(
-    [...document.querySelectorAll('.fragment')].map(preloadFragment)
+    [...document.querySelectorAll('.fragment')].map(preloadFragment),
   );
 
   // Load block resources
@@ -498,15 +490,13 @@ export class Block extends HTMLElement {
     // Set up MutationObserver to detect changes in child nodes
     this.observer = new MutationObserver((event) => {
       event.forEach((mutation) => {
-        mutation.addedNodes.forEach(this.decorate);
+        mutation.addedNodes.forEach((node) => {
+          node.querySelectorAll('.icon').forEach(decorateIcon);
+          node.querySelectorAll('a').forEach(decorateButton);
+        });
       });
     });
 
     this.observer.observe(this.shadowRoot, { childList: true, subtree: true });
-  }
-
-  decorate(node) {
-    node.querySelectorAll('.icon').forEach(decorateIcon);
-    node.querySelectorAll('a').forEach(decorateButton);
   }
 }
