@@ -182,7 +182,7 @@ function buildHeroBlock() {
  * @param {string} data.target subject of the checkpoint event,
  * for instance the href of a link, or a search term
  */
-function sampleRUM(checkpoint, data = {}) {
+export function sampleRUM(checkpoint, data = {}) {
   sampleRUM.defer = sampleRUM.defer || [];
   const defer = (fnname) => {
     sampleRUM[fnname] = sampleRUM[fnname]
@@ -347,7 +347,7 @@ function getBlockResources() {
   const templates = new Set();
 
   document
-    .querySelectorAll('header, footer, div[class]:not(.fragment)')
+    .querySelectorAll('header, footer, div[class]:not(.fragment):not(.section)')
     .forEach((block) => {
       const { status } = block.dataset;
 
