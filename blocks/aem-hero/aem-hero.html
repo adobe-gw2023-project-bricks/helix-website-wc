@@ -3,8 +3,9 @@
     :host {
       display: block;
       position: relative;
-      padding: 32px;
       min-height: 300px;
+      padding-top: 32px !important;
+      padding-bottom: 32px !important;
     }
 
     .picture {
@@ -26,6 +27,15 @@
       margin-left: auto;
       margin-right: auto;
       color: white;
+    }
+
+    .title h1 {
+      font-size: var(--heading-font-size-xxl);
+      font-weight: 600;
+      line-height: 1.25;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+      scroll-margin: calc(var(--nav-height) + 1em);
     }
   </style>
 

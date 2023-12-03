@@ -16,8 +16,6 @@ export default class Footer extends Block {
       }).children,
     ];
 
-    footer.setAttribute('slot', 'content');
-
-    this.appendChild(footer);
+    this.shadowRoot.querySelector('slot').append(footer);
   }
 }

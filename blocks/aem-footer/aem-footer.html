@@ -1,24 +1,24 @@
 <template>
   <style>
     :host {
+      display: block;
       padding: 2rem;
       background-color: var(--overlay-background-color);
       font-size: var(--body-font-size-s);
-      display: block;
     }
 
-    .footer {
+    footer {
       display: block;
       max-width: 1200px;
       margin: auto;
     }
 
-    /* TODO: not working, need to figure out how to style slotted elements */
     p {
       margin: 0;
-      background: red;
     }
   </style>
 
-  <slot name="content" class="footer"></slot>
+  <footer>
+    <slot></slot>
+  </footer>
 </template>

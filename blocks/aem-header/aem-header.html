@@ -1,5 +1,16 @@
 <template>
   <style>
+    :host {
+      background-color: var(--background-color);
+      width: 100%;
+      z-index: 10;
+      position: sticky;
+      top: 0;
+      max-height: 100%;
+      display: block;
+      padding: 0;
+    }
+
     nav {
       display: flex;
       align-items: center;
@@ -25,9 +36,18 @@
           <span class="icon nav-hamburger-icon"></span>
         </button>
       </div>
-      <slot name="brand" class="brand"></slot>
-      <slot name="sections" class="sections"></slot>
-      <slot name="tools" class="tools"></slot>
+
+      <div class="brand">
+        <slot name="brand"></slot>
+      </div>
+
+      <div class="sections">
+        <slot name="sections"></slot>
+      </div>
+
+      <div class="tools">
+        <slot name="tools"></slot>
+      </div>
     </nav>
   </header>
 </template>

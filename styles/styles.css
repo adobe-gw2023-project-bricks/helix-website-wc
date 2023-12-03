@@ -259,24 +259,17 @@ main img {
   width: 100%;
 }
 
-main .section {
+.section {
   padding: 64px 16px;
 }
 
 @media (width >= 600px) {
-  main .section {
+  .section {
     padding: 64px 32px;
   }
 }
 
-@media (width >= 900px) {
-  .section > div {
-    max-width: 1200px;
-    margin: auto;
-  }
-}
-
 /* section metadata */
-main .section.highlight {
+.section.highlight {
   background-color: var(--highlight-background-color);
 }

@@ -402,6 +402,11 @@ export default async function initialize() {
     }
   });
 
+  // Add sections class to all reminder main > div
+  document.querySelectorAll('main > *').forEach((section) => {
+    section.classList.add('section');
+  });
+
   // Page is fully loaded
   document.body.dataset.status = 'loaded';
 
@@ -473,7 +478,7 @@ export class Block extends HTMLElement {
 
   connectedCallback() {
     // Start observing child nodes, including subtrees
-    this.observer.observe(this, { childList: true, subtree: true });
+    this.observer.observe(this.shadowRoot, { childList: true, subtree: true });
   }
 
   disconnectCallback() {

@@ -16,12 +16,8 @@ export default class Header extends Block {
       }).children,
     ];
 
-    brand.setAttribute('slot', 'brand');
-    sections.setAttribute('slot', 'sections');
-    tools.setAttribute('slot', 'tools');
-
-    this.appendChild(brand);
-    this.appendChild(sections);
-    this.appendChild(tools);
+    this.shadowRoot.querySelector('slot[name="brand"]').append(brand);
+    this.shadowRoot.querySelector('slot[name="sections"]').append(sections);
+    this.shadowRoot.querySelector('slot[name="tools"]').append(tools);
   }
 }
