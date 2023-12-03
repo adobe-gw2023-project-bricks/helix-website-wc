@@ -7,10 +7,6 @@
       min-height: 300px;
     }
 
-    slot {
-      display: block;
-    }
-
     .picture {
       position: absolute;
       z-index: -1;
@@ -19,7 +15,6 @@
       box-sizing: border-box;
     }
 
-    /* TODO: slotted img not getting picked up by style */
     .picture img {
       object-fit: cover;
       width: 100%;
@@ -34,6 +29,10 @@
     }
   </style>
 
-  <slot name="title" class="title"></slot>
-  <slot name="picture" class="picture"></slot>
+  <div class="title">
+    <slot name="title"></slot>
+  </div>
+  <div class="picture">
+    <slot name="picture"></slot>
+  </div>
 </template>
