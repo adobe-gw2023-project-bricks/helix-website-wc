@@ -8,7 +8,7 @@ export default class Hero extends Block {
   }
 
   render() {
-    const [image, title] = [...this.children];
+    const [image, title] = [...this.values];
 
     this.shadowRoot.querySelector('slot[name="title"]').append(title);
     this.shadowRoot.querySelector('slot[name="picture"]').append(image);
