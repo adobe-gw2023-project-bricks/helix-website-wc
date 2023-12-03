@@ -115,6 +115,39 @@ function decorateIcon(elem) {
 }
 
 /**
+ * Decorates paragraphs containing a single link as buttons.
+ * @param {Element} element container element
+ */
+function decorateButton(a) {
+  a.title = a.title || a.textContent;
+
+  if (a.href !== a.textContent) {
+    const up = a.parentElement;
+    const twoup = a.parentElement.parentElement;
+
+    if (a.querySelector('img')) return;
+
+    if (
+      up.childNodes.length === 1 &&
+      up.tagName === 'STRONG' &&
+      twoup.childNodes.length === 1 &&
+      twoup.tagName === 'P'
+    ) {
+      a.className = 'button primary';
+    }
+
+    if (
+      up.childNodes.length === 1 &&
+      up.tagName === 'EM' &&
+      twoup.childNodes.length === 1 &&
+      twoup.tagName === 'P'
+    ) {
+      a.className = 'button secondary';
+    }
+  }
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
@@ -454,14 +487,9 @@ export class Block extends HTMLElement {
     slots.forEach((element) => {
       if (options.mapValues) {
         const [key, value] = element.children;
-
         this.values.set(key.innerText, value.innerHTML);
-
-        element.setAttribute('slot', key.innerText);
-        element.innerHTML = value.innerHTML;
       } else {
         this.values.push(element);
-        // this.innerHTML = '';
       }
     });
 
@@ -470,20 +498,15 @@ export class Block extends HTMLElement {
     // Set up MutationObserver to detect changes in child nodes
     this.observer = new MutationObserver((event) => {
       event.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
-          // decorate added nodes
-          node.querySelectorAll('.icon').forEach(decorateIcon);
-        });
+        mutation.addedNodes.forEach(this.decorate);
       });
     });
-  }
 
-  connectedCallback() {
-    // Start observing child nodes, including subtrees
     this.observer.observe(this.shadowRoot, { childList: true, subtree: true });
   }
 
-  disconnectCallback() {
-    this.observer.disconnect();
+  decorate(node) {
+    node.querySelectorAll('.icon').forEach(decorateIcon);
+    node.querySelectorAll('a').forEach(decorateButton);
   }
 }

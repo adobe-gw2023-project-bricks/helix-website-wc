@@ -18,7 +18,7 @@ export default class Columns extends Block {
         }
 
         column.classList.add('column');
-        slot.appendChild(column);
+        slot.append(column);
       });
     });
   }
