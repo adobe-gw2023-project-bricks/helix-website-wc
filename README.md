@@ -2,8 +2,8 @@
 Your project's description...
 
 ## Environments
-- Preview: https://main--{repo}--{owner}.hlx.page/
-- Live: https://main--{repo}--{owner}.hlx.live/
+- Preview: https://main--helix-website-wc--adobe-gw2023-project-bricks.hlx.page/
+- Live: https://main--helix-website-wc--adobe-gw2023-project-bricks.hlx.live/
 
 ## Installation
 
