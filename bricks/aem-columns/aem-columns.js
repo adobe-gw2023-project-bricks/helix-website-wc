@@ -8,10 +8,11 @@ export default class Columns extends Brick {
   }
 
   render() {
-    const size = this.values.length;
+    const items = [...this.root.children];
+    const size = items.length;
     const slot = this.shadowRoot.querySelector('slot');
 
-    this.values.forEach((row) => {
+    items.forEach((row) => {
       [...row.children].forEach((column, index) => {
         if (size % index === 0) {
           column.classList.add('last');
