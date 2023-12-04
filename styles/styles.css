@@ -10,6 +10,20 @@
  * governing permissions and limitations under the License.
  */
 
+@font-face {
+  font-family: "Trebuchet MS";
+  font-weight: 700;
+  size-adjust: 95%;
+  src: local("Trebuchet MS"), local("TrebuchetMS");
+}
+
+@font-face {
+  font-family: "Trebuchet MS";
+  font-weight: 400;
+  size-adjust: 87%;
+  src: local("Trebuchet MS"), local("TrebuchetMS");
+}
+
 :root {
   /* colors */
   --link-color: #035fe6;
@@ -20,9 +34,9 @@
   --text-color: #000;
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback;
+  --body-font-family: "Adobe Clean", adobe-clean, "Trebuchet MS", sans-serif;
   --heading-font-family: var(--body-font-family);
-  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono',
+  --fixed-font-family: "Source Code Pro", source-code-pro, "Courier New",
     monospace;
 
   /* body sizes */
@@ -31,12 +45,11 @@
   --body-font-size-xs: 16px;
 
   /* heading sizes */
-  --heading-font-size-xxl: 48px;
-  --heading-font-size-xl: 40px;
-  --heading-font-size-l: 32px;
-  --heading-font-size-m: 24px;
-  --heading-font-size-s: 20px;
-  --heading-font-size-xs: 18px;
+  --heading-font-size-xxl: 36px;
+  --heading-font-size-xl: 36px;
+  --heading-font-size-l: 24px;
+  --heading-font-size-m: 20px;
+  --heading-font-size-s: 16px;
 
   /* nav height */
   --nav-height: 64px;
@@ -51,12 +64,11 @@
 
 @media (width >= 900px) {
   :root {
-    --heading-font-size-xxl: 60px;
-    --heading-font-size-xl: 48px;
-    --heading-font-size-l: 36px;
-    --heading-font-size-m: 30px;
-    --heading-font-size-s: 24px;
-    --heading-font-size-xs: 22px;
+    --heading-font-size-xxl: 44px;
+    --heading-font-size-xl: 36px;
+    --heading-font-size-l: 28px;
+    --heading-font-size-m: 24px;
+    --heading-font-size-s: 20px;
   }
 }
 
@@ -95,11 +107,15 @@ h6 {
 }
 
 h1 {
-  font-size: var(--heading-font-size-xxl);
+    font-size: var(--heading-font-size-xxl)
 }
 
 h2 {
-  font-size: var(--heading-font-size-xl);
+    font-size: var(--heading-font-size-xl)
+}
+
+h3 {
+    font-size: var(--heading-font-size-m)
 }
 
 h3 {
