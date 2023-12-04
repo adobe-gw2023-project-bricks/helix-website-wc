@@ -453,6 +453,8 @@ export default async function initialize() {
   window.addEventListener('error', (event) => {
     sampleRUM('error', { source: event.filename, target: event.lineno });
   });
+
+  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-fonts.css`);
 }
 
 /**
