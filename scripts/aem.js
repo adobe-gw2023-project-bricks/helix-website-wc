@@ -453,6 +453,9 @@ export default async function initialize() {
   window.addEventListener('error', (event) => {
     sampleRUM('error', { source: event.filename, target: event.lineno });
   });
+
+  // lazy load styles
+  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
 }
 
 /**
