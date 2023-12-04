@@ -454,8 +454,7 @@ export default async function initialize() {
     sampleRUM('error', { source: event.filename, target: event.lineno });
   });
 
-  // lazy load styles
-  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-fonts.css`);
 }
 
 /**
