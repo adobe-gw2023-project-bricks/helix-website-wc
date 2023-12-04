@@ -42,7 +42,7 @@ function focusNavSection() {
  * @param {Boolean} expanded Whether the element should be expanded or collapsed
  */
 function toggleAllNavSections(sections, expanded = false) {
-  sections.querySelectorAll('.nav-sections .default-content-wrapper > ul > li').forEach((section) => {
+  sections?.querySelectorAll('.nav-sections .default-content-wrapper > ul > li').forEach((section) => {
     section.setAttribute('aria-expanded', expanded);
   });
 }
@@ -61,21 +61,23 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
   button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
   // enable nav dropdown keyboard accessibility
-  const navDrops = navSections.querySelectorAll('.nav-drop');
-  if (isDesktop.matches) {
-    navDrops.forEach((drop) => {
-      if (!drop.hasAttribute('tabindex')) {
-        drop.setAttribute('role', 'button');
-        drop.setAttribute('tabindex', 0);
-        drop.addEventListener('focus', focusNavSection);
-      }
-    });
-  } else {
-    navDrops.forEach((drop) => {
-      drop.removeAttribute('role');
-      drop.removeAttribute('tabindex');
-      drop.removeEventListener('focus', focusNavSection);
-    });
+  if (navSections) {
+    const navDrops = navSections.querySelectorAll('.nav-drop');
+    if (isDesktop.matches) {
+      navDrops.forEach((drop) => {
+        if (!drop.hasAttribute('tabindex')) {
+          drop.setAttribute('role', 'button');
+          drop.setAttribute('tabindex', 0);
+          drop.addEventListener('focus', focusNavSection);
+        }
+      });
+    } else {
+      navDrops.forEach((drop) => {
+        drop.removeAttribute('role');
+        drop.removeAttribute('tabindex');
+        drop.removeEventListener('focus', focusNavSection);
+      });
+    }
   }
   // enable menu collapse on escape keypress
   if (!expanded || isDesktop.matches) {
@@ -99,7 +101,7 @@ export default async function decorate(block) {
   // decorate nav DOM
   const nav = document.createElement('nav');
   nav.id = 'nav';
-  while (fragment.firstElementChild) nav.append(fragment.firstElementChild);
+  while (fragment?.firstElementChild) nav.append(fragment.firstElementChild);
 
   const classes = ['brand', 'sections', 'tools'];
   classes.forEach((c, i) => {
@@ -107,8 +109,7 @@ export default async function decorate(block) {
     if (section) section.classList.add(`nav-${c}`);
   });
 
-  const navBrand = nav.querySelector('.nav-brand');
-  const brandLink = navBrand.querySelector('.button');
+  const brandLink = nav.querySelector('.nav-brand')?.querySelector('.button');
   if (brandLink) {
     brandLink.className = '';
     brandLink.closest('.button-container').className = '';
