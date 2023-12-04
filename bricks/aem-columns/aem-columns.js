@@ -1,26 +1,29 @@
 import { Brick } from '../../scripts/aem.js';
 
 export default class Columns extends Brick {
-  constructor() {
-    super();
-
-    this.render();
-  }
-
-  render() {
+  connectedCallback() {
     const items = [...this.root.children];
     const size = items.length;
     const slot = this.shadowRoot.querySelector('slot');
+    slot.style.setProperty('--columns', size);
 
-    items.forEach((row) => {
-      [...row.children].forEach((column, index) => {
-        if (size % index === 0) {
-          column.classList.add('last');
+    items.forEach((item) => {
+      // create row
+      const row = document.createElement('div');
+      row.classList.add('row');
+
+      // create columns
+      [...item.children].forEach((column) => {
+        column.classList.add('column');
+
+        if (column.querySelector('picture')) {
+          column.classList.add('with-image');
         }
 
-        column.classList.add('column');
-        slot.append(column);
+        row.append(column);
       });
+
+      slot.append(row);
     });
   }
 }
