@@ -392,6 +392,21 @@ async function preloadFragment(element) {
   }
 }
 
+async function loadCommonBrickStyles() {
+  const res = await fetch(`${window.hlx.codeBasePath}/styles/bricks-common.css`);
+
+  if (!res.ok) {
+    // eslint-disable-next-line no-console
+    console.warn('Failed to load block common styles');
+    return null;
+  }
+
+  const css = await res.text();
+  window.hlx.blockStyles = css;
+
+  return css;
+}
+
 /**
  * Initializiation.
  */
@@ -412,9 +427,10 @@ export default async function initialize() {
   // Load brick resources
   const { components, templates } = getBrickResources();
 
-  const [, loadedComponents] = await Promise.allSettled([
-    Promise.allSettled([...templates].map(loadTemplate)),
+  const [loadedComponents] = await Promise.allSettled([
     Promise.allSettled([...components].map(loadBrick)),
+    Promise.allSettled([...templates].map(loadTemplate)),
+    loadCommonBrickStyles(),
   ]);
 
   // Define custom elements
@@ -473,7 +489,15 @@ export class Brick extends HTMLElement {
     const template = document.getElementById(id);
 
     if (template) {
+      const { blockStyles } = window.hlx;
+
       shadowRoot.appendChild(template.content.cloneNode(true));
+
+      if (blockStyles) {
+        const sheet = new CSSStyleSheet();
+        sheet.replaceSync(blockStyles);
+        shadowRoot.adoptedStyleSheets = [sheet];
+      }
     }
 
     const slots = this.querySelectorAll('[slot="item"]');
