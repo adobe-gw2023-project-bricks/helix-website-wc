@@ -478,15 +478,18 @@ export class Brick extends HTMLElement {
 
     const slots = this.querySelectorAll('[slot="item"]');
 
-    slots.forEach((element) => {
-      if (options.mapValues) {
+    // map values
+    if (options.mapValues) {
+      slots.forEach((element) => {
         const [key, value] = element.children;
         this.values.set(key.innerText, value.innerHTML);
-      } else {
-        this.values.push(element);
-      }
-    });
+      });
+    }
 
+    // move original html to this.root
+    const root = document.createElement('div');
+    root.innerHTML = this.innerHTML;
+    this.root = root.cloneNode(true);
     this.innerHTML = '';
 
     // Set up MutationObserver to detect changes in child nodes
