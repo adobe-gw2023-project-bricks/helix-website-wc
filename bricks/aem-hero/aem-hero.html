@@ -1,51 +1,156 @@
 <template>
   <style>
+    @import url('/styles/bricks-common.css');
+
     :host {
       display: block;
+      background: url("../img/colorful-bg.jpg") center center / cover;
+      background-position-x: center;
+      background-position-y: center;
+      background-position: center center;
+      width: 100%;
       position: relative;
-      min-height: 300px;
-      padding: 32px;
+      overflow: hidden;
+      padding: var(--spacing-xxl) 0;
+      padding-bottom: 0;
+      max-height: 800px;
     }
 
-    .picture {
+    .checker-board-guide {
       position: absolute;
-      z-index: -1;
       inset: 0;
-      object-fit: cover;
-      box-sizing: border-box;
-    }
-
-    .picture picture {
-      height: 100%;
-    }
-
-    .picture img {
-      object-fit: cover;
       width: 100%;
       height: 100%;
+      background: var(--checkerboard-background);
+      background-size: var(--checkerboard-background-size);
+      z-index: 0;
     }
 
-    .title {
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-      color: white;
+    /* text content */
+    .inner-content {
+      position: relative;
+      margin: 0 auto;
+      width: 100%;
+      max-width: var(--content-width);
+      text-align: center;
+      z-index: 2;
     }
 
-    .title h1 {
-      font-size: var(--heading-font-size-xxl);
-      font-weight: 600;
+    .inner-content h3 {
+      font-size: var(--type-body-l-size);
+      font-weight: 700;
+      letter-spacing: 1;
+      margin-bottom: var(--spacing-s);
+      color: var(--color-accent-blue);
+      text-transform: uppercase;
+      line-height: 100%;
+    }
+
+    .inner-content h3.icon-eyebrow {
+      padding-bottom: 0;
+    }
+
+    .inner-content h1 {
+      font-size: var(--type-heading-xxxl-size);
+      line-height: var(--type-heading-xxxl-lh);
+      margin-bottom: 0;
+    }
+
+    .inner-content > h1:last-of-type {
+      margin-bottom: var(--spacing-s);
+    }
+
+    .inner-content p {
+      display: none;
+      width: 90vw;
+      max-width: 600px;
+      margin: var(--spacing-xs) auto;
       line-height: 1.25;
-      margin-top: 1em;
-      margin-bottom: 0.5em;
-      scroll-margin: calc(var(--nav-height) + 1em);
+      font-size: var(--type-body-xs-size);
+    }
+
+    .inner-content strong {
+      background: var(--color-accent-highlight-yellow);
+    }
+
+    .inner-content a.button:any-link {
+      margin-top: 0;
+    }
+
+    /* default: image at bottom */
+    .image-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    .image-wrapper img {
+      display: block;
+      width: 80vw;
+      height: auto;
+      max-width: 800px;
+      margin: 0 auto;
+      margin-bottom: -10px;
+    }
+
+    @media screen and (min-width: 600px) {
+      .inner-content p {
+        display: block;
+        line-height: 1.5;
+        font-size: var(--type-body-l-size);
+      }
+
+      .inner-content a.button:any-link {
+        margin-bottom: var(--spacing-s);
+      }
+    }
+
+    @media screen and (min-width: 900px) {
+      .inner-content p {
+        margin-bottom: var(--spacing-m);
+      }
+
+      .inner-content a.button:any-link {
+        margin-bottom: 0;
+      }
+
+      .image-wrapper img {
+        margin-top: -2.5%;
+      }
+    }
+
+    a.button:any-link,
+    main .form .button {
+      cursor: pointer;
+      text-decoration: none;
+      padding: 5.5px 15px;
+      text-align: center;
+      font-size: var(--type-body-xs-size);
+      line-height: var(--body-line-height);
+      font-style: normal;
+      font-weight: 600;
+      color: var(--color-white);
+      background: transparent;
+      border: 2px solid var(--spectrum-blue);
+      border-radius: 100px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: inline-block;
+      position: relative;
+      height: fit-content;
+      transition: all 0.3s ease-in-out;
+      overflow: hidden;
+      transform: translateZ(0);
+
+      /* fix for ios overflow with border-radius not working */
+      isolation: isolate;
     }
   </style>
 
-  <div class="title">
-    <slot name="title"></slot>
+  <div class="checker-board-guide"></div>
+  <div class="inner-content">
+    <slot name="text"></slot>
   </div>
-  <div class="picture">
+  <div class="image-wrapper">
     <slot name="picture"></slot>
   </div>
 </template>
