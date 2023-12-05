@@ -1,13 +1,13 @@
 <template>
   <style>
-    :root {
+    @import url('/styles/bricks-common.css');
+
+    :host {
       --spacing-s: 24px;
       --spacing-l: 48px;
       --spacing-xl: 56px;
       --spacing-xxl: 80px;
-    }
 
-    :host {
       position: relative;
       display: flex;
       flex-direction: column;
@@ -16,17 +16,13 @@
       padding: var(--spacing-xl) 0;
     }
 
-    :host(.technology) div {
-      background-color: pink;
-    }
-
-    .logo-wall-title {
+    h1, h2, h3, h4, h5, h6 {
       max-width: 75vw;
       text-align: center;
       padding-bottom: var(--spacing-s);
     }
 
-    .logo-wall-list {
+    ul {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
@@ -37,7 +33,7 @@
       padding-inline-start: 0;
     }
 
-    .logo-wall-list-item {
+    li {
       list-style-type: none;
       display: flex;
       justify-content: center;
@@ -46,15 +42,15 @@
       height: 100%;
     }
 
-    .logo-wall-list-item a {
+    li a {
       transition: opacity .3s ease;
     }
 
-    .logo-wall-list-item a:hover {
+    li a:hover {
       opacity: 0.7;
     }
 
-    .logo-wall-list-item img {
+    li img {
       margin: 0 auto;
       display: block;
       width: 100%;
@@ -64,7 +60,7 @@
       object-fit: contain;
     }
 
-    .logo-wall.meriative-height-adjustment .logo-wall-list-item img {
+    :host(.meriative-height-adjustment) li img {
       max-height: 80px;
     }
 
@@ -73,26 +69,26 @@
         padding: var(--spacing-xxl) 0;
       }
 
-      .logo-wall-title {
+      h1, h2, h3, h4, h5, h6 {
         padding-bottom: var(--spacing-xl);
       }
 
-      .logo-wall-list {
+      ul {
         column-gap: var(--spacing-xl);
         row-gap: var(--spacing-l);
         max-width: 1200px;
       }
 
-      .technology .logo-wall-list {
+      :host(.technology) ul {
         max-width: 970px;
       }
 
-      .logo-wall-list-item img {
+      li img {
         max-width: clamp(180px, 20vw, 280px);
         max-height: 63px;
       }
 
-      .logo-wall.meriative-height-adjustment .logo-wall-list-item img {
+      :host(.meriative-height-adjustment) li img {
         max-height: 96px;
       }
     }

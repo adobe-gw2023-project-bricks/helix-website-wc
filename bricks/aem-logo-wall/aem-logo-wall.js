@@ -19,16 +19,12 @@ function createTag(tag, attributes, html) {
 
 export default class LogoWall extends Brick {
   connectedCallback() {
-    console.log('logo root', this.root, this.root.parentElement);
     const items = [...this.root.children];
     const slot = this.shadowRoot.querySelector('slot');
-
-    slot.classList.add('contained');
 
     const titles = document.createElement('div');
 
     const logoWallList = document.createElement('ul');
-    logoWallList.setAttribute('class', 'logo-wall-list');
 
     items.forEach((item) => {
       [...item.children].forEach((div) => {
@@ -38,12 +34,10 @@ export default class LogoWall extends Brick {
         const listItem = document.createElement('li');
 
         if (title) {
-          title.setAttribute('class', 'logo-wall-title');
           titles.append(title);
         } else if (svg) {
           const svgHref = new URL(svg.href).pathname;
           const linkEl = div.querySelectorAll('a')[1];
-          listItem.setAttribute('class', 'logo-wall-list-item');
 
           const svgEl = createTag('img', {
             src: svgHref,
@@ -64,15 +58,12 @@ export default class LogoWall extends Brick {
             logoWallList.append(listItem);
           }
         } else if (picture) {
-          listItem.setAttribute('class', 'logo-wall-list-item');
-
           const linkEl = div.querySelector('a');
           if (linkEl) {
             const pictureLink = createTag('a', {
               href: linkEl.href,
               title: linkEl.title,
               target: '_blank',
-              class: 'logo-wall-item-link',
               'aria-label': linkEl.textContent,
             }, picture);
 
