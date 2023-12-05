@@ -151,7 +151,7 @@
   --circular-1-clip-path-full: circle(120% at 0 50%);
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   :root {
     /* Headings (Consonant) */
     --type-heading-all-weight: 700;

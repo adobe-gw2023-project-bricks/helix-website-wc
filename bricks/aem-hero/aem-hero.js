@@ -5,9 +5,6 @@ export default class Hero extends Brick {
     const image = this.root.querySelector('picture');
     const text = this.root.querySelector('h1').parentElement;
 
-
-    console.log(this.root.outerHTML)
-
     this.shadowRoot.querySelector('slot[name="picture"]').replaceWith(image);
     this.shadowRoot.querySelector('slot[name="text"]').replaceWith(...text.children);
 
