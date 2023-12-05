@@ -444,13 +444,8 @@ export default async function initialize() {
   // Decorate Root
   decorateRoot();
 
-  // Load common brick styles
-  if (css.value) {
-    window.hlx.blockStyles = css.value;
-    const sheet = new CSSStyleSheet();
-    sheet.replaceSync(css.value);
-    document.adoptedStyleSheets = [sheet];
-  }
+  // common brick styles
+  window.hlx.blockStyles = css.value;
 
   // Define custom elements
   loadedComponents.value.forEach(async ({ status, value }) => {
@@ -516,12 +511,12 @@ export class Brick extends HTMLElement {
 
     const slots = this.querySelectorAll('[slot="item"]');
 
-    slots.forEach((element) => {
-      if (options.mapValues) {
+    if (options.mapValues) {
+      slots.forEach((element) => {
         const [key, value] = element.children;
         this.values.set(key.innerText, value.innerHTML);
-      }
-    });
+      });
+    }
 
     // clone root
     const root = document.createElement('div');
