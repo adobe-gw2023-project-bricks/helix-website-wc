@@ -319,8 +319,13 @@ function loadEagerImages() {
 }
 
 function transformToCustomElement(brick) {
-  const tagName = `aem-${brick.getAttribute('class')?.split(' ')[0] || brick.tagName.toLowerCase()}`;
+  const { classList } = brick;
+  const brickName = classList[0];
+  const brickClasses = [...classList].slice(1);
+
+  const tagName = `aem-${brickName || brick.tagName.toLowerCase()}`;
   const customElement = document.createElement(tagName);
+  customElement.classList.add(...brickClasses);
 
   customElement.innerHTML = brick.innerHTML;
 

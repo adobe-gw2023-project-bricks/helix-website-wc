@@ -1,10 +1,22 @@
 /* Style shared across all Bricks  */
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading-font-family);
   margin: 0;
-  margin-bottom: 0;
   scroll-margin: calc(var(--nav-height) + 1em);
+  font-weight: 700;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 900;
+  letter-spacing: -0.04em;
 }
 
 h1, h2, h3 {
@@ -17,11 +29,22 @@ h1 {
 }
 
 h2 {
-  font-size: var(--heading-font-size-xl);
+  font-size: var(--heading-font-size-xxl);
 }
 
 h3 {
   font-size: var(--heading-font-size-m);
+}
+
+
+
+h1 strong,
+h2 strong,
+h3 strong,
+h4 strong,
+h5 strong,
+h6 strong {
+  font-weight: 900;
 }
 
 p,
