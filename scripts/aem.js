@@ -314,16 +314,8 @@ function setup() {
 
 /** Eager load first image */
 function loadEagerImages() {
-  // on load, eager load if image is majorly visible in the viewport
-  const images = document.querySelectorAll('img');
-
-  images.forEach((img) => {
-    const visible = img.getBoundingClientRect().top < window.innerHeight / 1.5;
-
-    if (visible) {
-      img.setAttribute('loading', 'eager');
-    }
-  });
+  const hero = document.querySelector('main img');
+  hero?.setAttribute('loading', 'eager');
 }
 
 function transformToCustomElement(brick) {
@@ -392,6 +384,21 @@ async function preloadFragment(element) {
   }
 }
 
+async function getCommonBrickStyles() {
+  const res = await fetch(`${window.hlx.codeBasePath}/styles/bricks-common.css`);
+
+  if (!res.ok) {
+    // eslint-disable-next-line no-console
+    console.warn('Failed to load block common styles');
+    return null;
+  }
+
+  const css = await res.text();
+  window.hlx.blockStyles = css;
+
+  return css;
+}
+
 /**
  * Initializiation.
  */
@@ -412,10 +419,19 @@ export default async function initialize() {
   // Load brick resources
   const { components, templates } = getBrickResources();
 
-  const [, loadedComponents] = await Promise.allSettled([
-    Promise.allSettled([...templates].map(loadTemplate)),
+  const [css, loadedComponents] = await Promise.allSettled([
+    getCommonBrickStyles(),
     Promise.allSettled([...components].map(loadBrick)),
+    Promise.allSettled([...templates].map(loadTemplate)),
   ]);
+
+  // Load common brick styles
+  if (css.value) {
+    window.hlx.blockStyles = css.value;
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(css.value);
+    document.adoptedStyleSheets = [sheet];
+  }
 
   // Define custom elements
   loadedComponents.value.forEach(async ({ status, value }) => {
@@ -473,7 +489,15 @@ export class Brick extends HTMLElement {
     const template = document.getElementById(id);
 
     if (template) {
+      const { blockStyles } = window.hlx;
+
       shadowRoot.appendChild(template.content.cloneNode(true));
+
+      if (blockStyles) {
+        const sheet = new CSSStyleSheet();
+        sheet.replaceSync(blockStyles);
+        shadowRoot.adoptedStyleSheets = [sheet];
+      }
     }
 
     const slots = this.querySelectorAll('[slot="item"]');
