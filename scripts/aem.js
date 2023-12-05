@@ -3,8 +3,8 @@
  * @param {string} name The name of the template
  * @returns {Promise<HTMLTemplateElement>} The template
  */
-async function loadTemplate(brickName) {
-  const href = `${window.hlx.codeBasePath}/bricks/${brickName}/${brickName}.html`;
+async function loadTemplate(name) {
+  const href = `${window.hlx.codeBasePath}/bricks/${name}/${name}.html`;
 
   return new Promise((resolve, reject) => {
     const id = href.split('/').pop().split('.').shift();
@@ -45,22 +45,22 @@ async function loadTemplate(brickName) {
  * @param {string} href The path to the brick
  * @returns {Promise<HTMLElement>} The brick
  */
-async function loadBrick(brickName) {
-  const href = `${window.hlx.codeBasePath}/bricks/${brickName}/${brickName}.js`;
+async function loadBrick(name) {
+  const href = `${window.hlx.codeBasePath}/bricks/${name}/${name}.js`;
 
   return new Promise((resolve, reject) => {
     import(href)
       .then((mod) => {
         if (mod.default) {
           resolve({
-            name: brickName,
+            name,
             className: mod.default,
           });
         }
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
-        console.warn(`Failed to load module for ${brickName}`);
+        console.warn(`Failed to load module for ${name}`, error);
         reject(error);
       });
   });
@@ -171,6 +171,17 @@ function buildHeroBrick() {
 
     main.prepend(section);
   }
+}
+
+/**
+ * Decorate root.
+ */
+function decorateRoot() {
+  const root = document.createElement('aem-root');
+  root.append(document.querySelector('header'));
+  root.append(document.querySelector('main'));
+  root.append(document.querySelector('footer'));
+  document.body.prepend(root);
 }
 
 /**
@@ -340,11 +351,12 @@ function transformToCustomElement(brick) {
 }
 
 function getBrickResources() {
-  const components = new Set();
-  const templates = new Set();
+  const components = new Set(['aem-root', 'aem-header', 'aem-footer']);
+  const templates = new Set(['aem-root', 'aem-header', 'aem-footer']);
 
-  document
-    .querySelectorAll('header, footer, div[class]:not(.fragment):not(.section)')
+  // Load Bricks
+  document.body
+    .querySelectorAll('div[class]:not(.fragment)')
     .forEach((brick) => {
       const { status } = brick.dataset;
 
@@ -399,7 +411,6 @@ async function getCommonBrickStyles() {
   }
 
   const css = await res.text();
-  window.hlx.blockStyles = css;
 
   return css;
 }
@@ -430,6 +441,9 @@ export default async function initialize() {
     Promise.allSettled([...templates].map(loadTemplate)),
   ]);
 
+  // Decorate Root
+  decorateRoot();
+
   // Load common brick styles
   if (css.value) {
     window.hlx.blockStyles = css.value;
@@ -446,11 +460,6 @@ export default async function initialize() {
         customElements.define(value.name, value.className);
       }
     }
-  });
-
-  // Add sections class to all parent divs
-  document.querySelectorAll('main > div').forEach((section) => {
-    section.classList.add('section');
   });
 
   // Page is fully loaded
@@ -507,15 +516,14 @@ export class Brick extends HTMLElement {
 
     const slots = this.querySelectorAll('[slot="item"]');
 
-    // map values
-    if (options.mapValues) {
-      slots.forEach((element) => {
+    slots.forEach((element) => {
+      if (options.mapValues) {
         const [key, value] = element.children;
         this.values.set(key.innerText, value.innerHTML);
-      });
-    }
+      }
+    });
 
-    // move original html to this.root
+    // clone root
     const root = document.createElement('div');
     root.innerHTML = this.innerHTML;
     this.root = root.cloneNode(true);
@@ -524,9 +532,9 @@ export class Brick extends HTMLElement {
     // Set up MutationObserver to detect changes in child nodes
     this.observer = new MutationObserver((event) => {
       event.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
-          node.querySelectorAll('.icon').forEach(decorateIcon);
-          node.querySelectorAll('a').forEach(decorateButton);
+        mutation.addedNodes?.forEach((node) => {
+          node.querySelectorAll?.('.icon').forEach(decorateIcon);
+          node.querySelectorAll?.('a').forEach(decorateButton);
         });
       });
     });
