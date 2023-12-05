@@ -1,9 +1,9 @@
-# Your Project's Title...
+# aem.live on Web Components
 Your project's description...
 
 ## Environments
-- Preview: https://main--helix-website-wc--adobe-gw2023-project-bricks.hlx.page/
-- Live: https://main--helix-website-wc--adobe-gw2023-project-bricks.hlx.live/
+- Preview: https://bricks-preview.albertodicagno.com
+- Live: https://bricks.albertodicagno.com
 
 ## Installation
 
