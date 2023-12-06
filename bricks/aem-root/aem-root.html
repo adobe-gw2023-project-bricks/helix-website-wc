@@ -1,46 +1,58 @@
 <template>
   <style>
-    :host {
-      font-size: var(--body-font-size-m);
-      font-family: var(--body-font-family);
-      line-height: 1.6;
-      color: var(--text-color);
-      background-color: var(--background-color);
+    aem-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
     }
 
-    header {
-      height: var(--nav-height);
-    }
-
-    .section {
-      padding: 64px 16px;
-    }
-
-    .wrapper {
-      max-width: 1200px;
+    /* block style for container width, max-width */
+    .contained,
+    .section.content > div,
+    .title-section {
+      max-width: var(--grid-mobile-container-width);
       margin-left: auto;
       margin-right: auto;
+      display: block;
     }
 
-    @media (width >= 600px) {
-      .section {
-        padding: 64px 32px;
+    @media screen and (min-width: 600px) {
+      .contained,
+      .section.content > div,
+      .title-section {
+        max-width: var(--grid-tablet-container-width);
       }
     }
 
-    /* section metadata */
-    .section.highlight {
-      background-color: var(--highlight-background-color);
+    @media screen and (min-width: 900px) {
+      .contained,
+      .title-section {
+        max-width: 90%;
+      }
+
+      .section.content > div {
+        max-width: 100%;
+        padding-left: var(--side-navigation-bar-gap);
+        margin-right: 0;
+      }
+    }
+
+    @media screen and (min-width: 1250px) {
+      .contained,
+      .section.content > div,
+      .title-section {
+        max-width: var(--grid-desktop-container-width);
+      }
     }
   </style>
 
-  <body>
-    <aem-header></aem-header>
+  <aem-header></aem-header>
 
-    <main>
-      <slot name="main"></slot>
-    </main>
+  <main>
+    <slot name="main"></slot>
+  </main>
 
-    <aem-footer></aem-footer>
-  </body>
+  <aem-footer></aem-footer>
 </template>

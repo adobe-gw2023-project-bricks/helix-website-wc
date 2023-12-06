@@ -7,22 +7,24 @@ export default class Footer extends Brick {
     main.innerHTML = this.root.querySelector('main').innerHTML;
 
     // Decorate Sections
-    [...main.children].forEach((section) => {
-      // Purge empty DIVs
-      if (section.children.length === 0) {
-        section.remove();
-        return;
-      }
+    main.querySelectorAll(':scope > div').forEach((section) => {
+      const wrappers = [];
 
-      // Sections
-      if (section.tagName === 'DIV') {
-        section.classList.add('wrapper');
+      let defaultContent = false;
 
-        const wrapper = document.createElement('div');
-        wrapper.classList.add('section');
-        section.parentNode.insertBefore(wrapper, section);
-        wrapper.appendChild(section);
-      }
+      [...section.children].forEach((e) => {
+        if (e.tagName === 'DIV' || !defaultContent) {
+          const wrapper = document.createElement('div');
+          wrappers.push(wrapper);
+          defaultContent = e.tagName !== 'DIV';
+          if (defaultContent) wrapper.classList.add('default-content-wrapper');
+        }
+
+        wrappers[wrappers.length - 1].append(e);
+      });
+
+      wrappers.forEach((wrapper) => section.append(wrapper));
+      section.classList.add('section');
     });
   }
 }
