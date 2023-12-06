@@ -333,40 +333,30 @@ function setup() {
 
 /** Eager load first image */
 function loadEagerImages() {
-  function getViewportSrcset() {
-    // Query for the first <picture> element in the DOM
-    const pictureElement = document.querySelector('picture');
+  // Query for the first <picture> element in the DOM
+  const pictureElement = document.querySelector('picture');
 
-    if (pictureElement) {
-      // Iterate through <source> elements and find the corresponding srcset
-      const sourceElements = pictureElement.querySelectorAll('source');
-      for (let i = 0; i < sourceElements.length; i++) {
-        const sourceElement = sourceElements[i];
-        for (const sourceElement of sourceElements) {
-          const mediaQuery = sourceElement.getAttribute('media');
-          if (!mediaQuery || window.matchMedia(mediaQuery).matches) {
-            // If there is no media query or the media query matches the viewport, return the srcset
-            return sourceElement.getAttribute('srcset');
-          }
-        }
-      }
+  if (!pictureElement) return;
 
-      // If no matching <source> element is found, return the default <img> src
-      const imgElement = pictureElement.querySelector('img');
-      return imgElement.getAttribute('src');
-    }
+  function getSrcSet() {
+    const sourceElement = Array.from(pictureElement.querySelectorAll('source')).find((source) => {
+      const mediaQuery = source.getAttribute('media');
+      return !mediaQuery || window.matchMedia(mediaQuery).matches;
+    });
 
-    const source = getViewportSrcset();
+    const source = (sourceElement && sourceElement.getAttribute('srcset')) || pictureElement.querySelector('img').getAttribute('src');
 
-    // Create the link element
-    const linkElement = document.createElement('link');
-    linkElement.rel = 'preload';
-    linkElement.as = 'image';
-    linkElement.href = source;
-
-    // Append the link element to the head of the document
-    document.head.appendChild(linkElement);
+    return source;
   }
+
+  // Create the link element
+  const linkElement = document.createElement('link');
+  linkElement.rel = 'preload';
+  linkElement.as = 'image';
+  linkElement.href = getSrcSet();
+
+  // Append the link element to the head of the document
+  document.head.appendChild(linkElement);
 }
 
 function transformToBrick(block) {
