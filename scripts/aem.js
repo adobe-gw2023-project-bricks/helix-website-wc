@@ -337,25 +337,25 @@ function loadEagerImages() {
   hero?.setAttribute('loading', 'eager');
 }
 
-function transformToCustomElement(brick) {
-  const { classList } = brick;
-  const brickName = classList[0];
-  const brickClasses = [...classList].slice(1);
+function transformToBrick(block) {
+  const { classList } = block;
+  const blockName = classList[0];
+  const blockClasses = [...classList].slice(1);
 
-  const tagName = `aem-${brickName || brick.tagName.toLowerCase()}`;
-  const customElement = document.createElement(tagName);
-  customElement.classList.add(...brickClasses);
+  const tagName = `aem-${blockName || block.tagName.toLowerCase()}`;
+  const brick = document.createElement(tagName);
+  brick.classList.add(...blockClasses);
 
-  customElement.innerHTML = brick.innerHTML;
+  brick.innerHTML = block.innerHTML;
 
-  brick.parentNode.replaceChild(customElement, brick);
+  block.parentNode.replaceChild(brick, block);
 
   // Slots
-  [...customElement.children].forEach((slot) => {
+  [...brick.children].forEach((slot) => {
     slot.setAttribute('slot', 'item');
   });
 
-  return customElement;
+  return brick;
 }
 
 function getBrickResources() {
@@ -365,15 +365,15 @@ function getBrickResources() {
   // Load Bricks
   document.body
     .querySelectorAll('div[class]:not(.fragment)')
-    .forEach((brick) => {
-      const { status } = brick.dataset;
+    .forEach((block) => {
+      const { status } = block.dataset;
 
       if (status === 'loading' || status === 'loaded') return;
 
-      brick.dataset.status = 'loading';
+      block.dataset.status = 'loading';
 
-      const customElement = transformToCustomElement(brick);
-      const tagName = customElement.tagName.toLowerCase();
+      const brick = transformToBrick(block);
+      const tagName = brick.tagName.toLowerCase();
 
       components.add(tagName);
 
