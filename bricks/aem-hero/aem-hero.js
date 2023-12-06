@@ -5,9 +5,6 @@ export default class Hero extends Brick {
     const image = this.root.querySelector('picture');
     const text = this.root.querySelector('h1').parentElement;
 
-    // Decorate Image
-    // image.querySelector('img')?.setAttribute('loading', 'eager');
-
     // Decorate Buttons
     if (!this.classList.contains('multiple-cta')) {
       const ctaButton = text.querySelector('a');
