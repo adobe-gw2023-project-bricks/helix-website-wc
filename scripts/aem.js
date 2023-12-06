@@ -430,7 +430,7 @@ export default async function initialize() {
   setup();
 
   // Eager load first image
-  loadEagerImages();
+  // loadEagerImages();
 
   // Build hero brick
   buildHeroBrick();
