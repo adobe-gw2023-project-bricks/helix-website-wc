@@ -17,6 +17,11 @@ npm i
 npm run lint
 ```
 
+## LHS testing
+Page Speed Insights for:
+- [Preview](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fbricks-preview.albertodicagno.com%2F)
+- [Live](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fbricks.albertodicagno.com%2F)
+
 ## Local development
 
 1. Create a new repository based on the `aem-boilerplate` template and add a mountpoint in the `fstab.yaml`
