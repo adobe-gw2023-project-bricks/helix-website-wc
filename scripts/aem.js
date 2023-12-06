@@ -336,7 +336,11 @@ function loadEagerImages() {
   const firstImage = document.querySelector('main img');
 
   if (firstImage) {
-    firstImage?.setAttribute('loading', 'eager');
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = firstImage.src;
+    document.head.append(link);
   }
 }
 
