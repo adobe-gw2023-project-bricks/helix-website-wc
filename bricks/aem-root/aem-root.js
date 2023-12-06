@@ -1,6 +1,6 @@
 import { Brick } from '../../scripts/aem.js';
 
-export default class Footer extends Brick {
+export default class Root extends Brick {
   async connectedCallback() {
     // Main Sections
     const main = this.shadowRoot.querySelector('slot[name="main"]');
