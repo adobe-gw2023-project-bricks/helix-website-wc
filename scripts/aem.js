@@ -339,12 +339,12 @@ function loadEagerImages() {
 
 function transformToBrick(block) {
   const { classList } = block;
-  const brickName = classList[0];
-  const brickClasses = [...classList].slice(1);
+  const blockName = classList[0];
+  const blockClasses = [...classList].slice(1);
 
-  const tagName = `aem-${brickName || block.tagName.toLowerCase()}`;
+  const tagName = `aem-${blockName || block.tagName.toLowerCase()}`;
   const brick = document.createElement(tagName);
-  brick.classList.add(...brickClasses);
+  brick.classList.add(...blockClasses);
 
   brick.innerHTML = block.innerHTML;
 
