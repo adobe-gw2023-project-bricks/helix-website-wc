@@ -19,6 +19,11 @@ h3 {
   letter-spacing: -0.04em;
 }
 
+h1, h2, h3 {
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
 h1 {
   font-size: var(--heading-font-size-xxl);
 }
@@ -111,6 +116,33 @@ button {
   border-radius: 30px;
 }
 
+/* primary button: blue bg */
+a.button:any-link,
+main .form .button {
+  cursor: pointer;
+  text-decoration: none;
+  padding: 5.5px 15px;
+  text-align: center;
+  font-size: var(--type-body-xs-size);
+  line-height: var(--body-line-height);
+  font-style: normal;
+  font-weight: 600;
+  color: var(--color-white);
+  background: transparent;
+  border: 2px solid var(--spectrum-blue);
+  border-radius: 100px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  position: relative;
+  height: fit-content;
+  overflow: hidden;
+  transform: translateZ(0);
+
+  /* fix for ios overflow with border-radius not working */
+  isolation: isolate;
+}
+
 a.button:hover,
 a.button:focus,
 button:hover,
@@ -182,4 +214,273 @@ img {
 .icon img {
   height: 100%;
   width: 100%;
+}
+
+
+a.button:any-link {
+  text-decoration: none;
+  border-radius: 25px;
+  padding: 5px 1.2em 6px;
+  text-align: center;
+  font-size: var(--type-body-xs-size);
+  font-style: normal;
+  font-weight: 600;
+  line-height: var(--body-line-height);
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
+  border-width: 2px;
+  border-style: solid;
+  margin: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  height: fit-content;
+}
+
+a.button.xlarge:any-link {
+  padding: 13px 1.5em;
+  border-radius: 27px;
+  font-size: var(--type-body-l-size);
+}
+
+a.button.large:any-link {
+  padding: 8px 1.5em;
+  border-radius: 100px;
+}
+
+a.button.small:any-link {
+  padding: 4px 1em;
+  border-radius: 15px;
+  font-size: var(--type-body-xxs-size);
+}
+
+a.button:any-link,
+a.button.accent:any-link,
+a.button.primary-cta:any-link {
+  color: var(--color-white);
+  background-color: var(--color-info-accent);
+  border-color: var(--color-info-accent);
+}
+
+a.button:focus,
+a.button.accent:focus,
+a.button.primary-cta:focus {
+  background-color: var(--color-info-accent-hover);
+  border-color: var(--color-info-accent-hover);
+  color: var(--color-white);
+  box-shadow: 0 0 0 2px var(--color-white),
+  0 0 0 4px var(--color-info-accent-hover);
+}
+
+p.button-container > a.button {
+  margin-left: 0;
+}
+
+a.button:any-link:hover,
+a.button.accent:any-link:hover,
+a.button.primary-cta:any-link:hover {
+  background-color: var(--color-info-accent-hover);
+  border-color: var(--color-info-accent-hover);
+}
+
+a.button:any-link:active,
+a.button.accent:any-link:active,
+a.button.primary-cta:any-link:active {
+  background-color: var(--color-info-accent-down);
+  border-color: var(--color-info-accent-down);
+}
+
+a.button.primary:any-link {
+  color: var(--color-white);
+  background-color: var(--color-info-primary);
+  border-color: var(--color-info-primary);
+}
+
+a.button.primary:focus,
+a.button.primary.reverse:focus {
+  background-color: var(--color-info-primary-hover);
+  border-color: var(--color-info-primary-hover);
+  color: var(--color-white);
+}
+
+a.button.primary:any-link:hover {
+  background-color: var(--color-info-primary-hover);
+  border-color: var(--color-info-primary-hover);
+}
+
+a.button.primary:any-link:active {
+  background-color: var(--color-info-primary-down);
+  border-color: var(--color-info-primary-down);
+}
+
+a.button.secondary:any-link {
+  color: var(--color-black);
+  background-color: var(--color-info-secondary);
+  border-color: var(--color-info-secondary);
+}
+
+a.button.secondary:focus {
+  background-color: var(--color-gray-500);
+  border-color: var(--color-gray-500);
+  color: var(--color-white);
+}
+
+a.button.secondary:any-link:hover {
+  background-color: var(--color-info-secondary-hover);
+  border-color: var(--color-info-secondary-hover);
+}
+
+a.button.secondary:any-link:active {
+  background-color: var(--color-info-secondary-down);
+  border-color: var(--color-info-secondary-down);
+}
+
+a.button.reverse.accent:any-link,
+a.button.reverse.primary-cta:any-link {
+  color: var(--color-info-accent);
+}
+
+a.button.reverse:any-link {
+  color: var(--color-black);
+  background-color: var(--color-white);
+}
+
+a.button.reverse:focus,
+a.button.reverse.accent:any-link:focus,
+a.button.reverse.primary-cta:any-link:focus {
+  background-color: var(--color-info-accent-hover);
+  border-color: var(--color-info-accent-hover);
+  color: var(--color-white);
+}
+
+a.button.reverse:any-link:hover {
+  background-color: var(--color-info-secondary-hover);
+}
+
+a.button.reverse:any-link:active {
+  background-color: var(--color-info-secondary-down);
+}
+
+a.button.reverse.accent:any-link:hover,
+a.button.reverse.primary-cta:any-link:hover {
+  background-color: var(--color-info-accent-reverse);
+}
+
+a.button.reverse.accent:any-link:active,
+a.button.reverse.primary-cta:any-link:active {
+  background-color: var(--color-info-accent-reverse-down);
+}
+
+a.button > svg {
+  float: left;
+  display: inline;
+  width: 20px;
+  height: 20px;
+  margin: 8px 8px 8px 0;
+  fill: currentcolor;
+  color: currentcolor;
+}
+
+a.button > svg > use {
+  fill: currentcolor;
+  color: currentcolor;
+}
+
+main .form .button {
+  font-weight: 500;
+}
+
+a.button:any-link span {
+  color: var(--color-white);
+  transition: all 0.3s ease-in-out;
+}
+
+a.button:any-link:hover,
+main .form .button:hover {
+  color: var(--spectrum-blue);
+  border-color: var(--spectrum-blue);
+  transform: translateZ(0);
+}
+
+a.button:any-link:hover span {
+  color: var(--spectrum-blue);
+}
+
+a.button:any-link::before,
+main .form .button::before {
+  content: "";
+  position: absolute;
+  left: -102%;
+  top: 0;
+  transition: all 0.3s ease-in-out;
+  width: 202%;
+  height: 104%;
+  z-index: -1;
+
+  /* 1st value: hovered color, 2nd value: original color */
+  background: radial-gradient(
+      circle at left,
+      var(--color-white) 50%,
+      var(--spectrum-blue) 50%
+  );
+}
+
+a.button:any-link:hover::before,
+main .form .button:hover::before {
+  left: 0%;
+}
+
+a.button.secondary:any-link::before {
+  /* 1st value: hovered color, 2nd value: original color */
+  background: radial-gradient(
+      circle at left,
+      var(--color-font-grey) 50%,
+      transparent 50%
+  );
+}
+
+/* .black-border button: black border transparent bg -> border button */
+a.button.black-border:any-link {
+  color: var(--color-black);
+  border-color: var(--color-black);
+}
+
+a.button.black-border:any-link:hover {
+  color: var(--color-white);
+}
+
+a.button.black-border:any-link::before {
+  /* 1st value: hovered color, 2nd value: original color */
+  background: radial-gradient(
+      circle at left,
+      rgb(0 0 0 / 50%) 50%,
+      transparent 50%
+  );
+}
+
+@media screen and (width >= 900px) {
+  a.button.large:any-link {
+    font-size: var(--type-body-m-size);
+    line-height: 1.35;
+    padding: 8px 20px;
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (width >= 900px) {
+  a.button.large:any-link {
+    font-size: var(--type-body-m-size);
+    line-height: 1.35;
+    padding: 8px 20px;
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (width >= 1200px) {
+  a.button.large:any-link {
+    font-size: 18px;
+    line-height: 24px;
+    padding: 10px 26px;
+  }
 }

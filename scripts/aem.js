@@ -102,7 +102,7 @@ async function loadFonts() {
  * Add <img> for icon, prefixed with codeBasePath and optional prefix.
  * @param {span} [element] span element with icon classes
  */
-function decorateIcon(elem) {
+export function decorateIcon(elem) {
   if (elem.dataset.decorated) return;
 
   const iconName = Array.from(elem.classList)
@@ -121,7 +121,7 @@ function decorateIcon(elem) {
  * Decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
-function decorateButton(a) {
+export function decorateButton(a) {
   if (a.dataset.decorated) return;
 
   a.title = a.title || a.textContent;
