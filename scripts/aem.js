@@ -331,6 +331,18 @@ function setup() {
   }
 }
 
+/** Eager load first image */
+function loadEagerImages() {
+  const firstImage = document.querySelector('main img');
+
+  if (firstImage) {
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = firstImage.src;
+    document.head.append(link);
+  }
+}
+
 function transformToBrick(block) {
   const { classList } = block;
   const blockName = classList[0];
@@ -422,6 +434,9 @@ async function getCommonBrickStyles() {
  */
 export default async function initialize() {
   setup();
+
+  // Eager load first image
+  loadEagerImages();
 
   // Build hero brick
   buildHeroBrick();
