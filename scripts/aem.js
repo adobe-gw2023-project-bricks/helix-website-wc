@@ -331,12 +331,6 @@ function setup() {
   }
 }
 
-/** Eager load first image */
-function loadEagerImages() {
-  const hero = document.querySelector('main img');
-  hero?.setAttribute('loading', 'eager');
-}
-
 function transformToBrick(block) {
   const { classList } = block;
   const blockName = classList[0];
@@ -428,9 +422,6 @@ async function getCommonBrickStyles() {
  */
 export default async function initialize() {
   setup();
-
-  // Eager load first image
-  loadEagerImages();
 
   // Build hero brick
   buildHeroBrick();
