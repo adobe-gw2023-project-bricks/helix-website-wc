@@ -333,14 +333,32 @@ function setup() {
 
 /** Eager load first image */
 function loadEagerImages() {
-  const firstImage = document.querySelector('main img');
+  // Get the <picture> element
+  const pictureElement = document.querySelector('main picture');
 
-  if (firstImage) {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.href = firstImage.src;
-    document.head.append(link);
+  if (pictureElement) {
+    let sourceElement;
+
+    pictureElement.querySelectorAll('source').forEach((source) => {
+      const mediaQuery = source.getAttribute('media');
+      if (!mediaQuery || window.matchMedia(mediaQuery).matches) {
+        sourceElement = source;
+      }
+    });
+
+    if (sourceElement) {
+      // Get the source attribute value
+      const source = sourceElement.getAttribute('srcset');
+
+      // Create the link element
+      const linkElement = document.createElement('link');
+      linkElement.rel = 'preload';
+      linkElement.as = 'image';
+      linkElement.href = source;
+
+      // Append the link element to the head of the document
+      document.head.appendChild(linkElement);
+    }
   }
 }
 
