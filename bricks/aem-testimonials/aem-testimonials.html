@@ -1,0 +1,22 @@
+<template>
+  <style>
+    :host {
+      position: relative;
+      margin: 0 auto;
+      padding: var(--spacing-s) 0;
+      color: var(--tabs-active-text-color);
+      max-width: var(--grid-mobile-container-width);
+    }
+  </style>
+
+  <div class="tab-list image-based" role="tablist">
+    <div class="tablist-container">
+      <slot name="tablist"></slot>
+    </div>
+  </div>
+  <div class="tabcontent">
+    <div class="tabcontent-container">
+      <slot name="slides"></slot>
+    </div>
+  </div>
+</template>
