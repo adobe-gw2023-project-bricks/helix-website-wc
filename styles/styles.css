@@ -191,6 +191,10 @@
   --heading-font-size-m: 20px;
   --heading-font-size-s: 16px;
 
+  /* colorful tags */
+  --circular-icon-tag-size: 50px;
+  --circular-number-tag-size: 60px;
+
   /* nav height */
   --nav-height: 64px;
 

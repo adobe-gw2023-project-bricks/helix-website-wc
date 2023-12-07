@@ -558,7 +558,7 @@ a.button.black-border:any-link::before {
   padding: 0;
 }
 
-.colored-tag.circle svg {
+.colored-tag.circle img  {
   width: 40%;
   height: 40%;
 }
