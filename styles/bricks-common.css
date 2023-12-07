@@ -19,11 +19,6 @@ h3 {
   letter-spacing: -0.04em;
 }
 
-h1, h2, h3 {
-  font-weight: 900;
-  letter-spacing: -0.04em;
-}
-
 h1 {
   font-size: var(--heading-font-size-xxl);
 }
@@ -35,8 +30,6 @@ h2 {
 h3 {
   font-size: var(--heading-font-size-m);
 }
-
-
 
 h1 strong,
 h2 strong,
@@ -216,7 +209,6 @@ img {
   width: 100%;
 }
 
-
 a.button:any-link {
   text-decoration: none;
   border-radius: 25px;
@@ -270,7 +262,7 @@ a.button.primary-cta:focus {
   border-color: var(--color-info-accent-hover);
   color: var(--color-white);
   box-shadow: 0 0 0 2px var(--color-white),
-  0 0 0 4px var(--color-info-accent-hover);
+    0 0 0 4px var(--color-info-accent-hover);
 }
 
 p.button-container > a.button {
@@ -409,7 +401,7 @@ a.button:any-link:hover span {
 
 a.button:any-link::before,
 main .form .button::before {
-  content: "";
+  content: '';
   position: absolute;
   left: -102%;
   top: 0;
@@ -420,9 +412,9 @@ main .form .button::before {
 
   /* 1st value: hovered color, 2nd value: original color */
   background: radial-gradient(
-      circle at left,
-      var(--color-white) 50%,
-      var(--spectrum-blue) 50%
+    circle at left,
+    var(--color-white) 50%,
+    var(--spectrum-blue) 50%
   );
 }
 
@@ -434,9 +426,9 @@ main .form .button:hover::before {
 a.button.secondary:any-link::before {
   /* 1st value: hovered color, 2nd value: original color */
   background: radial-gradient(
-      circle at left,
-      var(--color-font-grey) 50%,
-      transparent 50%
+    circle at left,
+    var(--color-font-grey) 50%,
+    transparent 50%
   );
 }
 
@@ -453,9 +445,9 @@ a.button.black-border:any-link:hover {
 a.button.black-border:any-link::before {
   /* 1st value: hovered color, 2nd value: original color */
   background: radial-gradient(
-      circle at left,
-      rgb(0 0 0 / 50%) 50%,
-      transparent 50%
+    circle at left,
+    rgb(0 0 0 / 50%) 50%,
+    transparent 50%
   );
 }
 
