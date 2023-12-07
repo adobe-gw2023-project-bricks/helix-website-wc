@@ -556,24 +556,27 @@ export class HtmlTemplateBrick extends HTMLElement {
     const template = document.getElementById(id);
     if (template) {
       const content = template.content.cloneNode(true);
+
+      // Inject content from CSS selectors
       content.querySelectorAll('*[data-aem-selector]').forEach(e => {
-        const selector = e.dataset.aemSelector;
-        this.querySelectorAll(selector)?.forEach(src => {
-          // :has selector would fix this, but not available in all browsers so far
-          if('siblings' === e.dataset.aemSelectorProcess) {
-            Array.from(src.parentElement.children).forEach(child => e.append(child));
-          } else {
-            e.append(src);
-          }
-        });
+        this.querySelectorAll(e.dataset.aemSelector)?.forEach(src => e.append(src));
       });
+
+      // let derived classes get the content that they need,
+      // before we replace it with our template
+      if(this.prepareContent) {
+        this.prepareContent();
+      }
+
+      // Append content to shadow root or directly
       if(template.getAttribute('shadowroot') === 'true') {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.append(content);
+        this.root = this.shadowRoot;
       } else {
-        console.log('outer', this.outerHTML);
         this.innerHTML = '';
         this.append(content);
+        this.root = this;
       }
     }
   }
