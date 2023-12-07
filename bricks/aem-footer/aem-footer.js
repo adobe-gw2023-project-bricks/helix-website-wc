@@ -10,6 +10,6 @@ export default class Footer extends Brick {
       }).children,
     ];
 
-    this.shadowRoot.querySelector('slot').append(footer);
+    this.shadowRoot.querySelector('footer').append(footer);
   }
 }

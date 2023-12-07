@@ -3,7 +3,7 @@ import { Brick } from '../../scripts/aem.js';
 export default class Footer extends Brick {
   async connectedCallback() {
     // Main Sections
-    const main = this.shadowRoot.querySelector('slot[name="main"]');
+    const main = this.shadowRoot.querySelector('main');
     main.innerHTML = this.root.querySelector('main').innerHTML;
 
     // Decorate Sections
