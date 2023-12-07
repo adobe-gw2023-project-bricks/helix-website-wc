@@ -553,7 +553,6 @@ export class Brick extends HTMLElement {
 export class HtmlTemplateBrick extends HTMLElement {
   connectedCallback() {
     const id = this.tagName.toLowerCase();
-    this.attachShadow({ mode: 'open' });
     const template = document.getElementById(id);
     if (template) {
       const content = template.content.cloneNode(true);
@@ -561,14 +560,21 @@ export class HtmlTemplateBrick extends HTMLElement {
         const selector = e.dataset.aemSelector;
         this.querySelectorAll(selector)?.forEach(src => {
           // :has selector would fix this, but not available in all browsers so far
-          if('parent' === e.dataset.aemSelectorProcess) {
-            e.append(src.parentElement);
+          if('siblings' === e.dataset.aemSelectorProcess) {
+            Array.from(src.parentElement.children).forEach(child => e.append(child));
           } else {
             e.append(src);
           }
         });
       });
-      this.shadowRoot.append(content);
+      if(template.getAttribute('shadowroot') === 'true') {
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.append(content);
+      } else {
+        console.log('outer', this.outerHTML);
+        this.innerHTML = '';
+        this.append(content);
+      }
     }
   }
 }
