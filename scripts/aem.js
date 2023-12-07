@@ -350,11 +350,6 @@ function transformToBrick(block) {
 
   block.parentNode.replaceChild(brick, block);
 
-  // Slots
-  [...brick.children].forEach((slot) => {
-    slot.setAttribute('slot', 'item');
-  });
-
   return brick;
 }
 
@@ -389,8 +384,8 @@ function getBrickResources() {
 }
 
 async function preloadFragment(element) {
-  const slot = element.querySelector('div > div');
-  const path = slot.innerText;
+  const item = element.querySelector('div > div');
+  const path = item.innerText;
 
   const url = new URL(`${path}.plain.html`, window.location.origin);
 
@@ -402,7 +397,7 @@ async function preloadFragment(element) {
       console.warn(`failed to preload fragment ${path}`);
     }
 
-    slot.innerHTML = await res.text();
+    item.innerHTML = await res.text();
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(`Loading fragment ${path} failed:`, error);
@@ -517,10 +512,10 @@ export class Brick extends HTMLElement {
       }
     }
 
-    const slots = this.querySelectorAll('[slot="item"]');
+    const items = this.querySelectorAll(':scope > div');
 
     if (options.mapValues) {
-      slots.forEach((element) => {
+      items.forEach((element) => {
         const [key, value] = element.children;
         this.values.set(key.innerText, value.innerHTML);
       });
