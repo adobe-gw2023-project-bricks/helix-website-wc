@@ -580,21 +580,6 @@ a.button.black-border:any-link::before {
   margin-bottom: var(--spacing-xs);
 }
 
-/* colored tags: circle icon */
-.colored-tag.circle {
-  width: var(--circular-icon-tag-size);
-  height: var(--circular-icon-tag-size);
-  border-radius: 100%;
-  display: grid;
-  place-items: center;
-  padding: 0;
-}
-
-.colored-tag.circle svg {
-  width: 40%;
-  height: 40%;
-}
-
 /* colored tags: color variation */
 .colored-tag.pink {
   background-color: var(--color-accent-pink-bg);
