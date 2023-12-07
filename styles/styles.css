@@ -186,12 +186,33 @@
     --type-heading-xs-size: 18px;
     --type-heading-xs-lh: 22px;
 
-    /* colorful tags */
-    --circular-icon-tag-size: 50px;
-    --circular-number-tag-size: 60px;
+  /* Body (Consonant) */
+  --type-body-l-size: 20px;
+  --type-body-l-lh: 30px;
+  --type-body-m-size: 18px;
+  --type-body-m-lh: 27px;
+  --type-body-s-size: 16px;
+  --type-body-s-lh: 1.5;
+  --type-body-xs-size: 14px;
+  --type-body-xs-lh: 21px;
+  --type-body-xxs-size: 12px;
+  --type-body-xxs-lh: 1.5;
+  --type-body-xxxs-lh: 15px;
 
-    /* Border-radius */
-    --card-border-radius-l: 24px;
+  /* heading sizes */
+  --heading-font-size-xxxl: 44px;
+  --heading-font-size-xxl: 36px;
+  --heading-font-size-xl: 36px;
+  --heading-font-size-l: 24px;
+  --heading-font-size-m: 20px;
+  --heading-font-size-s: 16px;
+
+  /* colorful tags */
+  --circular-icon-tag-size: 50px;
+  --circular-number-tag-size: 60px;
+
+  /* nav height */
+  --nav-height: 64px;
 
     /* guide-templates */
     --side-navigation-bar-gap: clamp(
@@ -211,6 +232,7 @@
 
 @media (width >= 900px) {
   :root {
+    --heading-font-size-xxxl: clamp(60px, 4.2vw, 80px);
     --heading-font-size-xxl: 44px;
     --heading-font-size-xl: 36px;
     --heading-font-size-l: 28px;
