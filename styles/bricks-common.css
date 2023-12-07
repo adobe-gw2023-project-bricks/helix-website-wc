@@ -558,7 +558,7 @@ a.button.black-border:any-link::before {
   padding: 0;
 }
 
-.colored-tag.circle svg {
+.colored-tag.circle img  {
   width: 40%;
   height: 40%;
 }
@@ -578,6 +578,21 @@ a.button.black-border:any-link::before {
   rgb(0 0 0 / 4%) 0 22px 33px, rgb(0 0 0 / 3.5%) 0 13px 19px,
   rgb(0 0 0 / 3%) 0 7px 10px, rgb(0 0 0 / 2%) 0 3px 4px;
   margin-bottom: var(--spacing-xs);
+}
+
+/* colored tags: circle icon */
+.colored-tag.circle {
+  width: var(--circular-icon-tag-size);
+  height: var(--circular-icon-tag-size);
+  border-radius: 100%;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.colored-tag.circle svg {
+  width: 40%;
+  height: 40%;
 }
 
 /* colored tags: color variation */

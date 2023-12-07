@@ -1,41 +1,307 @@
 <template>
   <style>
     :host {
+      text-align: left;
+    }
+
+    .columns-image img {
+      max-width: 100%;
+    }
+
+    :host(.center-image-small) slot > div {
+      padding: 0;
+    }
+
+    :host(.contained) slot > div {
+      margin: 0 auto;
+      padding: var(--spacing-s) 0;
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    :host(.contained) slot > div > div {
+      margin-bottom: var(--spacing-s);
+    }
+
+    :host(.single-grid) slot > div > div {
+      margin-bottom: 0;
+    }
+
+    :host(.tall) slot > div > div {
+      padding: var(--spacing-xl) var(--spacing-ml) var(--spacing-m);
+      background: var(--bg-color-lightgrey);
+      border-radius: var(--card-border-radius-l);
+      text-align: center;
       display: flex;
       flex-direction: column;
     }
 
-    .row {
+    :host(.contained) .three > div {
+      padding: var(--spacing-ml) 0;
+    }
+
+    :host(.contained) .four > div {
+      gap: var(--spacing-s);
+    }
+
+    /* contained */
+    :host(.contained) img {
+      filter: var(--image-filter-drop-shadow-small);
+    }
+
+    :host(.contained) img,
+    :host(.contained):not(.icon-sm) svg {
+      display: inline-block;
+    }
+
+    :host(.contained).icon-sm svg {
+      display: inline-block;
+    }
+
+    /* text-sm */
+    :host(.text-sm) p {
+      font-size: var(--type-body-xs-size);
+      line-height: var(--type-body-xxs-lh);
+    }
+
+    /* - .tall - 3 card section  - */
+    :host(.tall) .columns-image .image-wrapper-el {
+      margin-top: auto;
+      padding-top: var(--spacing-s);
+    }
+
+    :host(.tall) h3 {
+      margin-bottom: var(--spacing-xs);
+      font-size: var(--type-heading-xl-size);
+      line-height: var(--type-heading-xl-lh);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    :host(.tall) p {
+      font-size: var(--type-body-s-size);
+      line-height: var(--type-body-s-lh);
+    }
+
+    :host(.tall) img {
+      width: 100%;
+      aspect-ratio: 5 / 4;
+      object-fit: contain;
+    }
+
+    :host(.tall) .colored-tag.number-tag {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* .center-image-small, adjust image size on sidekick extension page */
+    :host(.center-image-small) slot > div > div:last-of-type {
+      display: grid;
+      justify-content: center;
+      align-items: center;
+    }
+
+    :host(.center-image-small) slot > div > div:last-of-type picture {
+      width: fit-content;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
-    .column {
-      width: 100%;
-      order: 1;
+    :host(.center-image-small) slot > div > div:last-of-type img {
+      width: 70%;
+      max-width: 360px;
+      filter: none;
     }
 
-    .column.with-image {
-      order: 0;
+    :host(.contained:not(.tall)) .three > div {
+      text-align: center;
     }
 
-    .column img {
-      width: 100%;
-      height: auto;
+    :host(.contained) slot > div > div > p:first-of-type {
+      margin: 0;
     }
 
-    @media (width >= 900px) {
-      .row {
-        align-items: center;
-        flex-direction: unset;
-        gap: 32px;
+    :host(.contained) .four .columns-content-wrapper p {
+      margin-bottom: 0;
+    }
+
+    :host(.colored-icon) h3 {
+      font-weight: 700;
+      font-size: var(--type-heading-s-size);
+      line-height: var(--type-heading-s-lh);
+    }
+
+    /* center */
+    :host(.center) .columns-content-wrapper {
+      text-align: center;
+    }
+
+    :host(.center) .columns-content-wrapper .icon {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* TODO come back to this */
+    main.without-full-width-hero .section.content .columns-wrapper {
+      margin-top: var(--spacing-m);
+    }
+
+    @media screen and (min-width: 768px) {
+      /* tall cards */
+      :host(.tall) slot > div > div {
+        padding: var(--spacing-xl) var(--spacing-s) var(--spacing-m);
+        text-align: left;
       }
 
-      .column {
+      :host(.tall) h3 {
+        font-size: var(--type-heading-s-size);
+        line-height: var(--type-heading-s-lh);
+      }
+
+      :host(.tall) p {
+        font-size: var(--type-body-xs-size);
+        line-height: var(--type-body-xs-lh);
+      }
+
+      :host(.tall) .colored-tag.number-tag {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      /* contained */
+      :host(.contained) .columns-content-wrapper p {
+        margin-bottom: 1em;
+      }
+
+      /* adapt for 3 column layout in redesign for 4-columns - Start */
+      :host(.contained) .four > div {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 24px;
+      }
+
+      :host(.four.contained) .columns-content-wrapper p {
+        margin-top: var(--spacing-xxs);
+      }
+
+      :host(.contained) .four > div > div {
+        grid-column: span 2;
+      }
+
+      :host(.tall.contained) .three > div {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: var(--spacing-xs);
+      }
+
+      /* Dealing with 2 orphan items */
+      :host(.contained) .four > div > div:last-child:nth-child(3n - 1) {
+        grid-column-end: -2;
+      }
+
+      :host(.contained) .four > div > div:nth-last-child(2):nth-child(3n + 1) {
+        grid-column-end: 4;
+      }
+
+      /* Dealing with single orphan */
+      :host(.contained) .four > div > div:last-child:nth-child(3n - 2) {
+        grid-column-end: 5;
+      }
+
+      /* adapt for 3 column layout in redesign for 4-columns - End */
+    }
+
+    @media screen and (min-width: 900px) {
+      /* TODO come back to this */
+      .columns-wrapper {
+        margin: var(--spacing-xl) 0 0;
+      }
+
+      :host(.contained) slot > div > div {
+        margin-bottom: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* tall */
+      :host(.tall) h3 {
+        margin-bottom: var(--spacing-s);
+        font-size: var(--type-heading-m-size);
+        line-height: var(--type-heading-m-lh);
+      }
+
+      :host(.tall) .columns-image .image-wrapper-el {
+        padding-top: var(--spacing-l);
+        margin-bottom: 0;
+      }
+
+      :host(.tall) slot > div > div {
+        padding: var(--spacing-xl) var(--spacing-m);
+        margin-bottom: var(--spacing-s);
+      }
+
+      :host(.tall.contained) slot > div {
+        grid-gap: 32px;
+      }
+
+      /* force image to stick to bottom */
+      :host(.tall) slot > div > div > p {
         flex: 1;
-        order: unset;
+        font-size: var(--type-body-s-size);
+        line-height: var(--type-body-s-lh);
+      }
+
+      /* others */
+      :host(.contained) .two > div {
+        max-width: var(--grid-desktop-container-width);
+        grid-template-columns: 50% 50%;
+        grid-gap: var(--spacing-xxl);
+      }
+
+      :host(.contained) .three > div {
+        max-width: var(--grid-desktop-container-width);
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: var(--spacing-xxl);
+      }
+
+      :host(.contained) .four > div {
+        max-width: var(--grid-desktop-container-width);
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-gap: var(--spacing-xl) var(--spacing-s);
+        padding-top: 0;
+      }
+
+      :host(.contained) .four > div > div {
+        grid-column: span 1;
+      }
+
+      :host(.tall.contained) .three > div {
+        grid-gap: var(--spacing-m);
+        padding: var(--spacing-xs) 0;
+      }
+
+      /* cancel off previous effect */
+      :host(.contained) .four > div > div:last-child:nth-child(3n - 1),
+      :host(.contained) .four > div > div:nth-last-child(2):nth-child(3n + 1),
+      :host(.contained) .four > div > div:last-child:nth-child(3n - 2) {
+        grid-column-end: auto;
       }
     }
+
+    @media screen and (min-width: 1200px) {
+      :host(.colored-icon) h3 {
+        line-height: 1;
+      }
+
+      :host(.tall) h3 {
+        font-size: var(--type-heading-l-size);
+        line-height: var(--type-heading-l-lh);
+      }
+
+      :host(.tall) slot > div > div {
+        padding: var(--spacing-xxl) var(--spacing-xl);
+      }
+    }
+
   </style>
 
   <slot></slot>
