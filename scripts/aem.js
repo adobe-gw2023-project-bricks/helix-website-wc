@@ -1,3 +1,5 @@
+import config from './bricks.config.js';
+
 /**
  * Load HTML Template
  * @param {string} name The name of the template
@@ -102,7 +104,7 @@ async function loadFonts() {
  * Add <img> for icon, prefixed with codeBasePath and optional prefix.
  * @param {span} [element] span element with icon classes
  */
-export function decorateIcon(elem) {
+function decorateIcon(elem) {
   if (elem.dataset.decorated) return;
 
   const iconName = Array.from(elem.classList)
@@ -121,7 +123,7 @@ export function decorateIcon(elem) {
  * Decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
-export function decorateButton(a) {
+function decorateButton(a) {
   if (a.dataset.decorated) return;
 
   a.title = a.title || a.textContent;
@@ -359,10 +361,18 @@ function transformToBrick(block) {
 }
 
 function getBrickResources() {
-  const components = new Set(['aem-root', 'aem-header', 'aem-footer']);
-  const templates = new Set(['aem-root', 'aem-header', 'aem-footer']);
+  const components = new Set([]);
+  const templates = new Set([]);
 
-  // Load Bricks
+  // Load Bricks from config
+  config.bricks?.forEach((brick) => {
+    components.add(brick.name);
+    if (brick.template !== false) {
+      templates.add(brick.name);
+    }
+  });
+
+  // Load Bricks from DOM
   document.body
     .querySelectorAll('div[class]:not(.fragment)')
     .forEach((block) => {
@@ -424,8 +434,8 @@ async function getCommonBrickStyles() {
 }
 
 /**
- * Initializiation.
- */
+   * Initializiation.
+   */
 export default async function initialize() {
   setup();
 
@@ -487,12 +497,15 @@ export default async function initialize() {
     sampleRUM('error', { source: event.filename, target: event.lineno });
   });
 
-  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-fonts.css`);
+  // Load lazy css from config
+  config.css?.forEach(({ path }) => {
+    loadCSS(`${window.hlx.codeBasePath}${path}`);
+  });
 }
 
 /**
- * Brick Definition
- */
+   * Brick Definition
+   */
 export class Brick extends HTMLElement {
   constructor(options = {}) {
     super();
