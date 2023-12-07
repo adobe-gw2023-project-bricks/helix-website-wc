@@ -1,0 +1,229 @@
+<template>
+  <style>
+    :host {
+      --desktop-section-spacing: 120px;
+    }
+
+    :host {
+      padding: var(--spacing-xl) 0;
+    }
+
+    slot > div {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .z-pattern-heading {
+      text-align: center;
+      margin: 0 auto;
+      padding-bottom: var(--spacing-xl);
+      overflow: hidden;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    :host(.z-pattern-redesign) h3 {
+      grid-column: 1 / 3;
+      font-size: var(--type-heading-l-lh);
+      line-height: 1.2;
+    }
+
+    slot > div[class^="z-row"] {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap:  var(--spacing-s);
+      margin-bottom: var(--spacing-s);
+    }
+
+    :host(.spacing-lg) > div[class^="z-row"] {
+      padding-top: var(--spacing-xl);
+      justify-content: space-between;
+    }
+
+    slot > div[class^="z-row"] > div {
+      max-width: 83.4%;
+      text-align: center;
+    }
+
+    slot > div[class^="z-row"] > div img {
+      margin: 0 auto;
+    }
+
+    .z-pattern-cta {
+      text-align: center;
+    }
+
+    :host(.value-props) .z-pattern-heading > div {
+      width: 84%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    :host(.value-props) .z-pattern-heading h2 {
+      display: inline;
+    }
+
+    :host(.value-props) > div[class^="z-row"] > div {
+      max-width: 100%;
+      text-align: center;
+    }
+
+    :host(.value-props) .icon-eyebrow {
+      justify-content: center;
+    }
+
+    :host(.value-props) .main-headline {
+      width: 80%;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media screen and (min-width: 600px) {
+      :host {
+        padding: var(--spacing-xxl) 0;
+      }
+
+      :host(.value-props) {
+        padding-bottom: 0;
+      }
+
+      :host(.value-props) > slot > div[class^="z-row"] {
+        flex-direction: row;
+      }
+
+      :host(.value-props) .z-pattern-heading {
+        padding-bottom: 100px;
+      }
+
+      :host(.value-props) .z-pattern-heading > div {
+        width: 100%;
+      }
+
+      :host(.value-props) .z-pattern-heading h2 {
+        display: block;
+      }
+
+      :host(.value-props) .image-side {
+        width: 45%;
+      }
+
+      :host(.value-props) .content-side {
+        width: 50%;
+      }
+
+      :host(.value-props) .icon-eyebrow {
+        justify-content: inherit;
+      }
+
+      :host(.value-props) .main-headline {
+        width: 100%;
+        font-size: var(--type-heading-xl-size);
+        text-align: left;
+        margin-left: inherit;
+        margin-right: inherit;
+      }
+
+      /* default: left side content go first */
+      slot > div.z-row-odd > div:first-child {
+        order: 2;
+      }
+
+      /* .right-first: right side content go first */
+      :host(.right-first) div.z-row-even > div:first-child {
+        order: 1;
+      }
+
+      :host(.right-first) div.z-row-odd > div:first-child {
+        order: 1;
+      }
+
+      :host(.right-first) div.z-row-odd > div:last-child {
+        order: 2;
+      }
+    }
+
+    @media (min-width: 900px) {
+      slot > div[class^="z-row"] {
+        flex-direction: row;
+      }
+
+      :host(.spacing-lg) div[class^="z-row"] {
+        margin-top: var(--desktop-section-spacing);
+      }
+
+      slot > div[class^="z-row"] > div {
+        flex: 0 0 40%;
+        text-align: left;
+        max-width: 500px;
+      }
+
+      div.z-row-odd > div:first-child {
+        order: 2;
+      }
+
+      div[class^="z-row"] > div:first-of-type {
+        margin-right: var(--spacing-s);
+      }
+
+      :host(.spacing-lg) div[class^="z-row"]:last-of-type {
+        margin-bottom: var(--desktop-section-spacing);
+      }
+
+      :host(.wide-text) div[class^="z-row"] > div {
+        flex: 0 0 54%;
+        max-width: 600px;
+      }
+
+      :host(.wide-text) div[class^="z-row"] > div:first-of-type {
+        flex: 0 0 42%;
+      }
+
+      :host(.value-props) .main-headline {
+        width: 70%;
+      }
+
+      :host(.value-props) .z-pattern-heading h2 {
+        font-size: var(--heading-font-size-xxxl);
+        line-height: var(--type-heading-xxxl-lh);
+      }
+
+      :host(.value-props) .z-pattern-heading {
+        padding: 60px 0 90px;
+      }
+    }
+
+    ul {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      font-size: var(--type-body-xs-size);
+      list-style: none;
+      padding-left: 0;
+      margin-top: var(--spacing-s);
+    }
+
+    .colored-tag-description {
+      text-align: center;
+    }
+
+    @media (min-width: 600px) {
+      .colored-tag-description {
+        text-align: left;
+      }
+    }
+
+    @media (min-width: 900px) {
+      ul {
+        grid-template-columns: 1fr 1fr;
+        margin-top: var(--spacing-m);
+      }
+    }
+  </style>
+
+  <slot></slot>
+</template>
