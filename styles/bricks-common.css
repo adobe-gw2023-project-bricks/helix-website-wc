@@ -614,7 +614,7 @@ a.button.black-border:any-link::before {
   line-height: var(--type-body-xs-lh);
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (width >= 768px) {
   .colored-tag {
     padding: 4px 16px;
   }
@@ -623,4 +623,5 @@ a.button.black-border:any-link::before {
     margin-bottom: var(--spacing-s);
   }
 }
+
 /* -- colored tags end -- */
