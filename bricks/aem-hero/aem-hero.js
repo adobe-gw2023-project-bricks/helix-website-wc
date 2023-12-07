@@ -1,13 +1,11 @@
-import { Brick } from '../../scripts/aem.js';
+import { HtmlTemplateBrick } from '../../scripts/aem.js';
 
-export default class Hero extends Brick {
+export default class Hero extends HtmlTemplateBrick {
+  // Best case the class can be empty, but if you need
+  // some additional processing like here it can happen
+  // in connectedCallback()
   connectedCallback() {
-    const image = this.root.querySelector('picture');
-    const text = this.root.querySelector('h1').parentElement;
-
-    this.shadowRoot.querySelector('slot[name="picture"]').replaceWith(image);
-    this.shadowRoot.querySelector('slot[name="text"]').replaceWith(...text.children);
-
-    this.shadowRoot.querySelector('a').classList.add('button', 'primary', 'large');
+    super.connectedCallback();
+    this.shadowRoot.querySelector('a')?.classList.add('button', 'primary', 'large');
   }
 }

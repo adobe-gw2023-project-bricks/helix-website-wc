@@ -545,3 +545,30 @@ export class Brick extends HTMLElement {
     this.observer.observe(this.shadowRoot, { childList: true, subtree: true });
   }
 }
+
+/**
+ * Simpler brick using data-aem-selector attributes in the
+ * HTML template to select the content to inject in it.
+ */
+export class HtmlTemplateBrick extends HTMLElement {
+  connectedCallback() {
+    const id = this.tagName.toLowerCase();
+    this.attachShadow({ mode: 'open' });
+    const template = document.getElementById(id);
+    if (template) {
+      const content = template.content.cloneNode(true);
+      content.querySelectorAll('*[data-aem-selector]').forEach(e => {
+        const selector = e.dataset.aemSelector;
+        this.querySelectorAll(selector)?.forEach(src => {
+          // :has selector would fix this, but not available in all browsers so far
+          if('parent' === e.dataset.aemSelectorProcess) {
+            e.append(src.parentElement);
+          } else {
+            e.append(src);
+          }
+        });
+      });
+      this.shadowRoot.append(content);
+    }
+  }
+}
