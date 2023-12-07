@@ -1,0 +1,51 @@
+<template>
+    <style>
+        :host {
+            display: block;
+            background: url("../img/colorful-bg.jpg") center center / cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        slot {
+            background: var(--checkerboard-background);
+            background-size: var(--checkerboard-background-size);
+        }
+
+        slot > h2 {
+            font-size: var(--type-heading-xxl-size);
+            line-height: var(--type-heading-xxxl-lh);
+            text-align: center;
+            font-weight: 700;
+            margin: 0 auto var(--spacing-s);
+            max-width: 300px;
+        }
+
+        slot > p {
+            text-align: center;
+        }
+
+        slot > p > a.button.large:any-link {
+            border-color: var(--spectrum-blue);
+        }
+
+        @media (min-width: 900px) {
+            :host {
+                min-height: 480px;
+            }
+
+            slot > h2 {
+                font-size: var(--type-heading-xxxl-size);
+                max-width: 520px;
+                margin-bottom: var(--spacing-ml);
+            }
+        }
+    </style>
+    <div class="checker-board-guide"></div>
+    <div class="inner-content">
+        <slot name="item"></slot>
+    </div>
+</template>
