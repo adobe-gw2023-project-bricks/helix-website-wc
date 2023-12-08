@@ -87,6 +87,22 @@ async function loadCSS(href) {
   });
 }
 
+/** Loads a JS file
+ * @param {string} src URL to the JS file
+ *
+ */
+async function loadJS(src) {
+  return new Promise((resolve, reject) => {
+    import(src)
+      .then(resolve)
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.warn(`Failed to load script ${src}`, error);
+        reject(error);
+      });
+  });
+}
+
 /**
  * load fonts.css and set a session storage flag
  */
@@ -474,6 +490,8 @@ export default async function initialize() {
     getCommonBrickStyles(),
     Promise.allSettled([...components].map(loadBrick)),
     Promise.allSettled([...templates].map(loadTemplate)),
+    Promise.allSettled(config.scripts?.filter((s) => s.eager).map(({ path }) => loadJS(`${window.hlx.codeBasePath}${path}`)) || []),
+    Promise.allSettled(config.css?.filter((s) => s.eager).map(({ path }) => loadCSS(`${window.hlx.codeBasePath}${path}`)) || []),
   ]);
 
   // Decorate Root
@@ -514,8 +532,13 @@ export default async function initialize() {
     sampleRUM('error', { source: event.filename, target: event.lineno });
   });
 
+  // Load lazy js from config
+  config.scripts?.filter((s) => !s.eager).forEach(({ path }) => {
+    loadJS(`${window.hlx.codeBasePath}${path}`);
+  });
+
   // Load lazy css from config
-  config.css?.forEach(({ path }) => {
+  config.css?.filter((s) => !s.eager).forEach(({ path }) => {
     loadCSS(`${window.hlx.codeBasePath}${path}`);
   });
 }

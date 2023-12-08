@@ -5,6 +5,10 @@ export default {
     { name: 'aem-footer' },
   ],
 
+  scripts: [
+    { path: '/components/aem-tabs/aem-tabs.js', eager: true },
+  ],
+
   css: [
     { path: '/styles/lazy-fonts.css' },
   ],
