@@ -43,7 +43,9 @@ export default class HtmlTemplateBrick extends HTMLElement {
     });
   }
 
-  connectedCallback() {
+  constructor() {
+    super();
+
     const id = this.tagName.toLowerCase();
     const template = document.getElementById(id);
     if (template) {

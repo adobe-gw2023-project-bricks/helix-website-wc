@@ -15,8 +15,6 @@ export default class Hero extends HtmlTemplateBrick {
 
   /** Needed to add button classes */
   connectedCallback() {
-    super.connectedCallback();
-
     // setup our "button"
     this.root.querySelector('a')?.classList.add('button', 'primary', 'large');
   }
