@@ -2,15 +2,12 @@ import { Brick } from '../../scripts/aem.js';
 
 function addBlockLevelInViewAnimation(main) {
   const observerOptions = {
-    threshold: 0.1, // add `.in-view` class when is 20% in view
-    // rootMargin: '-10px 0px -10px 0px',
+    threshold: 0.1,
   };
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      console.log('intersecting?', entry.target);
       if (entry.isIntersecting) {
-        console.log('entry in view', entry.target);
         entry.target.classList.add('in-view');
         observer.unobserve(entry.target);
       }
@@ -20,7 +17,6 @@ function addBlockLevelInViewAnimation(main) {
   // support block level animation as well
   const inviewTriggerClassList = '.fade-up, .fade-in, .fade-left, .fade-right';
   main.querySelectorAll(inviewTriggerClassList).forEach((section) => {
-    console.log('section selected', section);
     observer.observe(section);
   });
 }
