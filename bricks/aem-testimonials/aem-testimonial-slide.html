@@ -9,10 +9,14 @@
       font-size: 0.83em;
       margin-bottom: 0.25em;
     }
+
+    .tabpanel:not(.active) {
+      display: none;
+    }
   </style>
 
 
-  <div id="tabs-panel-0-tab-0" role="tabpanel" class="tabpanel testimonial active" tabindex="0" aria-labelledby="tabs-0-tab-0">
+  <div id="tabs-panel-0-tab-0" role="tabpanel" class="tabpanel testimonial" tabindex="0" aria-labelledby="tabs-0-tab-0">
     <div class="image-side">
       <slot name="side-image"></slot>
     </div>

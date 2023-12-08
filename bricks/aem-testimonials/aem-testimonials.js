@@ -12,41 +12,54 @@ class Component extends HTMLElement {
   }
 }
 
+customElements.define(
+  'testimonial-slide',
+  class extends Component {
+    constructor() {
+      super('testimonial-slide');
+      if (this.getAttribute('active') === 'true') {
+        this.shadowRoot.querySelector('.tabpanel').classList.add('active');
+      }
+    }
+  },
+);
+customElements.define(
+  'testimonial-tab',
+  class extends Component {
+    constructor() {
+      super('testimonial-tab');
+      this.shadowRoot.addEventListener('slotchange', (e) => {
+        console.log(e.target);
+      });
+    }
+  },
+);
+
 export default class Header extends Brick {
   constructor() {
     super();
+    this.activeSlide = 0;
+    this.render();
+  }
+
+  setActiveSlide(activeSlide) {
+    this.activeSlide = parseInt(activeSlide, 10);
     this.render();
   }
 
   async render() {
+    this.innerHTML = '';
     await Promise.all([
       loadTemplate('/bricks/aem-testimonials/aem-testimonial-slide.html', 'testimonial-slide'),
-      loadTemplate('/bricks/aem-testimonials/aem-testimonial-tablist.html', 'testimonial-tablist'),
+      loadTemplate('/bricks/aem-testimonials/aem-testimonial-tab.html', 'testimonial-tab'),
     ]);
-
-    customElements.define(
-      'testimonial-slide',
-      class extends Component {
-        constructor() {
-          super('testimonial-slide');
-        }
-      },
-    );
-    customElements.define(
-      'testimonial-tablist',
-      class extends Component {
-        constructor() {
-          super('testimonial-tablist');
-        }
-      },
-    );
 
     function slotElement(item, slot) {
       item.setAttribute('slot', slot);
       return item.outerHTML;
     }
 
-    this.root.querySelectorAll(':scope > div').forEach((item) => {
+    this.root.querySelectorAll(':scope > div').forEach((item, i) => {
       const siteLink = slotElement(item.querySelector(':scope > div:nth-child(3) > p:last-of-type'), 'site-link');
       const text = slotElement(item.querySelector(':scope > div:nth-child(3) > p'), 'testimonial-quote');
 
@@ -57,19 +70,26 @@ export default class Header extends Brick {
         .filter((p) => p.childElementCount === 0)
         .map((p) => slotElement(p, 'titles')).join('');
 
-      console.log(item.innerHTML);
+      const brandImage = slotElement([...item.querySelectorAll('picture')][0], 'brand-image');
+      const siteImage = slotElement([...item.querySelectorAll('picture')][1], 'slide-image');
+      const contactPersonImage = slotElement([...item.querySelectorAll('picture')][2], 'contact-image');
+
       this.append(document.createRange().createContextualFragment(`
-        <testimonial-tablist slot="tablist">
-          
-        </testimonial-tablist>
-        <testimonial-slide slot="slides">
-          <picture slot="side-image">${item.querySelectorAll('picture')[1].innerHTML}</picture>
+        <testimonial-tab slot="tablist" index="${i}" active="${i === this.activeSlide}">
+          ${brandImage}
+        </testimonial-tab>
+        <testimonial-slide slot="slides" active="${i === this.activeSlide}">
+          <picture slot="side-image">${siteImage}</picture>
           ${siteLink}
           ${text}
           ${stats}
           ${titles}
         </testimonial-slide>
       `));
+    });
+
+    this.querySelectorAll('testimonial-tab').forEach((tab) => {
+      tab.addEventListener('click', () => this.setActiveSlide(tab.getAttribute('index')));
     });
   }
 }
