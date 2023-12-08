@@ -1,0 +1,150 @@
+<template>
+  <style>
+    .aem-testimonials__tabs {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      width: 86%;
+      margin: 0 auto;
+    }
+
+    .aem-testimonials__tabs__button {
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+      width: 100%;
+      position: relative;
+      color: var(--tabs-text-color);
+      background: transparent;
+      padding: 16px 0 8px;
+      font-family: var(--body-font-family);
+      font-weight: 600;
+      border: none;
+      border-bottom: 2px solid #e8e8e8;
+      transition: all 0.2s ease-in-out;
+      border-radius: 0;
+      height: 92px;
+      opacity: 0.35;
+    }
+
+    .aem-testimonials__tabs__button[aria-selected='true'] {
+      border-bottom-color: #000;
+      opacity: 1;
+    }
+
+    .aem-testimonials__tabs__button img {
+      width: 70%;
+      height: 100%;
+      max-height: 56px;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .aem-testimonails__content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .aem-testimonails__content__image {
+      width: 50%;
+    }
+
+    .aem-testimonails__content__image img {
+      width: 100%;
+      height: auto;
+    }
+
+    .aem-testimonails__content__text {
+      flex: 1;
+    }
+
+    .aem-testimonials__content__quote {
+      font-weight: 700;
+      font-size: var(--type-body-s-size);
+      line-height: 1.25;
+      text-align: left;
+      padding-bottom: var(--spacing-s);
+      margin: 0;
+    }
+
+    .aem-testimonials__content__quote p {
+      margin: 0;
+    }
+
+    .aem-testimonials__content__author {
+      display: grid;
+      width: 100%;
+      grid-template-columns: 50px 1fr auto;
+      align-items: center;
+      padding-bottom: var(--spacing-s);
+      grid-gap: var(--spacing-xs);
+    }
+
+    .aem-testimonials__content__author__avatar img {
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    /* Name */
+    .aem-testimonials__content__author__name p {
+      font-weight: 700;
+      font-size: 0.83em;
+      margin: 0 0 0.25em;
+      line-height: 1.2;
+    }
+
+    .aem-testimonials__content__author__name p + p {
+      font-weight: 400;
+      font-style: normal;
+      font-size: var(--type-body-xxs-size);
+      margin-bottom: 0;
+    }
+  </style>
+
+  <aem-tabs active="0">
+    <div class="aem-testimonials__tabs">
+      <button
+        class="aem-testimonials__tabs__button"
+        data-tabs-label
+        data-aem-each=":scope > div > div:nth-child(1)"
+      >
+        <div data-aem-inject="picture"></div>
+      </button>
+    </div>
+
+    <div
+      class="aem-testimonails__content"
+      data-tabs-content
+      data-aem-each=":scope > div"
+    >
+      <div
+        class="aem-testimonails__content__image"
+        data-aem-inject=":scope > div:nth-child(2)"
+      ></div>
+
+      <div class="aem-testimonails__content__text">
+        <div
+          class="aem-testimonials__content__quote"
+          data-aem-inject=":scope > div:nth-child(3) > p:nth-child(1)"
+        ></div>
+
+        <div class="aem-testimonials__content__author">
+          <div
+            class="aem-testimonials__content__author__avatar"
+            data-aem-inject=":scope > div:nth-child(3) > p:nth-child(2) > picture"
+          ></div>
+          <div
+            class="aem-testimonials__content__author__name"
+            data-aem-inject=":scope > div:nth-child(3) > p:nth-child(3), :scope > div:nth-child(3) > p:nth-child(4)"
+          ></div>
+          <div
+            class="aem-testimonials__content__author__link"
+            data-aem-inject=":scope > div:nth-child(3) > p:nth-child(5)"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </aem-tabs>
+</template>
