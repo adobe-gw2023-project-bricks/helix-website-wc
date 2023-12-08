@@ -8,7 +8,7 @@ export default class Header extends Brick {
   }
 
   async render() {
-    const res = await fetch('/nav.plain.html');
+    const res = await fetch('/new-nav.plain.html');
 
     const [brand, sections, tools] = [
       ...Object.assign(document.createElement('div'), {

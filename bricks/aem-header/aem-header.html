@@ -25,8 +25,60 @@
       text-align: left;
     }
 
-    .sections {
-      flex-grow: 1;
+    .brand .gnav-brand.with-logo > div > div {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .brand .gnav-brand.with-logo > div > div > p:nth-child(1) {
+      display: flex;
+      margin-right: 10px;
+    }
+
+    .brand .gnav-brand.with-logo > div > div > p:nth-child(2) a {
+      -webkit-box-decoration-break: clone;
+      background-image: linear-gradient( 90deg, rgba(137 140 242 / 50%) 0%, rgba(242 231 251 / 50%) 50%, rgba(241 188 231 / 50%) 100% );
+      background-repeat: no-repeat;
+      background-position: 4px 82%;
+      background-size: 0% 50%;
+      transition: background-size 0.3s ease-in-out;
+      padding-right: 4px;
+      font-size: 14px;
+    }
+
+    @media screen and (min-width: 600px) {
+      .brand .gnav-brand.with-logo > div > div > p:nth-child(2) a {
+        font-size: 16px;
+        line-height: 18px;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+      }
+    }
+
+    .brand .gnav-brand.with-logo > div > div > p:nth-child(2) a:hover {
+      background-size: 100% 50%;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .sections,
+    .tools {
+      /* flex-grow: 1; */
+      display: none;
+    }
+
+    .nav-hamburger button {
+      padding: 0;
+    }
+
+    .nav-hamburger button::after {
+      content: "\2630";
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--bg-color-black);
+      cursor: pointer;
     }
   </style>
 
@@ -34,7 +86,6 @@
     <nav>
       <div class="nav-hamburger">
         <button type="button" aria-controls="nav" aria-label="Open navigation">
-          <span class="icon nav-hamburger-icon"></span>
         </button>
       </div>
 
