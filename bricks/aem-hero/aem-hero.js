@@ -4,7 +4,6 @@ import HtmlTemplateBrick from '../../scripts/html-template-brick.js';
 // some additional processing that cannot be expressed
 // with data-aem-selector, this is the place
 export default class Hero extends HtmlTemplateBrick {
-
   /** Inject content that cannot be easily expressed by CSS selectors */
   injectMoreContent(newContent) {
     const h1 = this.querySelector('h1');
