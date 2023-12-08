@@ -1,28 +1,23 @@
-import { Brick } from '../../scripts/aem.js';
+import HtmlTemplateBrick from '../../scripts/html-template-brick.js';
 
-export default class Hero extends Brick {
-  connectedCallback() {
-    const image = this.root.querySelector('picture');
-    const text = this.root.querySelector('h1').parentElement;
-
-    // Decorate Buttons
-    if (!this.classList.contains('multiple-cta')) {
-      const ctaButton = text.querySelector('a');
-
-      if (ctaButton) {
-        ctaButton.classList.add('button', 'large');
-        ctaButton.closest('p').replaceWith(ctaButton);
-      }
-    } else {
-      const ctaButtonList = text.querySelector('ul');
-      ctaButtonList.classList.add('cta-button-list');
-      const ctaButtons = ctaButtonList.querySelectorAll('ul a');
-      ctaButtons.forEach((btn) => {
-        btn.classList.add('button', 'large', 'black-border');
-      });
+// Best case this class can be empty, but if you need
+// some additional processing that cannot be expressed
+// with data-aem-selector, this is the place
+export default class Hero extends HtmlTemplateBrick {
+  /** Inject content that cannot be easily expressed by CSS selectors */
+  injectMoreContent(newContent) {
+    const h1 = this.querySelector('h1');
+    if (h1) {
+      const ic = newContent.querySelector('.inner-content');
+      Array.from(h1.parentElement.children).forEach((e) => ic.append(e));
     }
+  }
 
-    this.shadowRoot.querySelector('slot[name="picture"]').replaceWith(image);
-    this.shadowRoot.querySelector('slot[name="text"]').replaceWith(...text.children);
+  /** Needed to add button classes */
+  connectedCallback() {
+    super.connectedCallback();
+
+    // setup our "button"
+    this.root.querySelector('a')?.classList.add('button', 'primary', 'large');
   }
 }

@@ -1,6 +1,9 @@
-<template>
+<template shadowroot="false">
   <style>
-    :host {
+    /* Not using shadowroot here, so "local" CSS rules must be 
+     * prepended with aem-hero for isolation.
+     */
+    aem-hero {
       display: block;
       background: url('../img/colorful-bg.jpg') center center / cover;
       background-position-x: center;
@@ -14,7 +17,27 @@
       max-height: 800px;
     }
 
-    .inner-content h3 {
+    aem-hero .checker-board-guide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--checkerboard-background);
+      background-size: var(--checkerboard-background-size);
+      z-index: 0;
+    }
+
+    /* text content */
+    aem-hero .inner-content {
+      position: relative;
+      margin: 0 auto;
+      width: 100%;
+      max-width: var(--content-width);
+      text-align: center;
+      z-index: 2;
+    }
+
+    aem-hero .inner-content h3 {
       font-size: var(--type-body-l-size);
       font-weight: 700;
       letter-spacing: 1;
@@ -24,21 +47,21 @@
       line-height: 100%;
     }
 
-    .inner-content h3.icon-eyebrow {
+    aem-hero .inner-content h3.icon-eyebrow {
       padding-bottom: 0;
     }
 
-    .inner-content h1 {
+    aem-hero .inner-content h1 {
       font-size: var(--type-heading-xxxl-size);
       line-height: var(--type-heading-xxxl-lh);
       margin-bottom: 0;
     }
 
-    .inner-content > h1:last-of-type {
+    aem-hero .inner-content > h1:last-of-type {
       margin-bottom: var(--spacing-s);
     }
 
-    .inner-content p {
+    aem-hero .inner-content p {
       display: none;
       width: 90vw;
       max-width: 600px;
@@ -47,22 +70,22 @@
       font-size: var(--type-body-xs-size);
     }
 
-    .inner-content strong {
+    aem-hero .inner-content strong {
       background: var(--color-accent-highlight-yellow);
     }
 
-    .inner-content a.button:any-link {
+    aem-hero .inner-content a.button:any-link {
       margin-top: 0;
       margin-bottom: max(var(--spacing-xl), 10vh);
     }
 
     /* default: image at bottom */
-    .image-wrapper {
+    aem-hero .image-wrapper {
       position: relative;
       z-index: 1;
     }
 
-    .image-wrapper img {
+    aem-hero .image-wrapper img {
       display: block;
       width: 80vw;
       height: auto;
@@ -72,33 +95,33 @@
     }
 
     @media screen and (min-width: 600px) {
-      .inner-content p {
+      aem-hero .inner-content p {
         display: block;
         line-height: 1.5;
         font-size: var(--type-body-l-size);
       }
 
-      .inner-content a.button:any-link {
+      aem-hero .inner-content a.button:any-link {
         margin-bottom: var(--spacing-s);
       }
     }
 
     @media screen and (min-width: 900px) {
-      .inner-content p {
+      aem-hero .inner-content p {
         margin-bottom: var(--spacing-m);
       }
 
-      .inner-content a.button:any-link {
+      aem-hero .inner-content a.button:any-link {
         margin-bottom: 0;
       }
 
-      .image-wrapper img {
+      aem-hero .image-wrapper img {
         margin-top: -2.5%;
       }
     }
 
-    a.button:any-link,
-    main .form .button {
+    aem-hero a.button:any-link,
+    aem-hero main .form .button {
       cursor: pointer;
       text-decoration: none;
       padding: 5.5px 15px;
@@ -125,11 +148,10 @@
     }
   </style>
 
+  <!-- Needs no content, CSS magic only for this element -->
   <div class="checker-board-guide"></div>
-  <div class="inner-content">
-    <slot name="text"></slot>
-  </div>
-  <div class="image-wrapper">
-    <slot name="picture"></slot>
-  </div>
+  <!-- For this one we use JS code -->
+  <div class="inner-content"></div>
+  <!-- No code needed if a CSS selector can provide the content -->
+  <div class="image-wrapper" data-aem-selector="picture"></div>
 </template>

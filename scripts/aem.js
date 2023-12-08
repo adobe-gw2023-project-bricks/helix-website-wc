@@ -1,3 +1,5 @@
+import config from './bricks.config.js';
+
 /**
  * Load HTML Template
  * @param {string} name The name of the template
@@ -102,7 +104,7 @@ async function loadFonts() {
  * Add <img> for icon, prefixed with codeBasePath and optional prefix.
  * @param {span} [element] span element with icon classes
  */
-export function decorateIcon(elem) {
+function decorateIcon(elem) {
   if (elem.dataset.decorated) return;
 
   const iconName = Array.from(elem.classList)
@@ -121,7 +123,7 @@ export function decorateIcon(elem) {
  * Decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
-export function decorateButton(a) {
+function decorateButton(a) {
   if (a.dataset.decorated) return;
 
   a.title = a.title || a.textContent;
@@ -372,19 +374,22 @@ function transformToBrick(block) {
 
   block.parentNode.replaceChild(brick, block);
 
-  // Slots
-  [...brick.children].forEach((slot) => {
-    slot.setAttribute('slot', 'item');
-  });
-
   return brick;
 }
 
 function getBrickResources() {
-  const components = new Set(['aem-root', 'aem-header', 'aem-footer']);
-  const templates = new Set(['aem-root', 'aem-header', 'aem-footer']);
+  const components = new Set([]);
+  const templates = new Set([]);
 
-  // Load Bricks
+  // Load Bricks from config
+  config.bricks?.forEach((brick) => {
+    components.add(brick.name);
+    if (brick.template !== false) {
+      templates.add(brick.name);
+    }
+  });
+
+  // Load Bricks from DOM
   document.body
     .querySelectorAll('div[class]:not(.fragment)')
     .forEach((block) => {
@@ -411,8 +416,8 @@ function getBrickResources() {
 }
 
 async function preloadFragment(element) {
-  const slot = element.querySelector('div > div');
-  const path = slot.innerText;
+  const item = element.querySelector('div > div');
+  const path = item.innerText;
 
   const url = new URL(`${path}.plain.html`, window.location.origin);
 
@@ -424,7 +429,7 @@ async function preloadFragment(element) {
       console.warn(`failed to preload fragment ${path}`);
     }
 
-    slot.innerHTML = await res.text();
+    item.innerHTML = await res.text();
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(`Loading fragment ${path} failed:`, error);
@@ -509,7 +514,10 @@ export default async function initialize() {
     sampleRUM('error', { source: event.filename, target: event.lineno });
   });
 
-  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-fonts.css`);
+  // Load lazy css from config
+  config.css?.forEach(({ path }) => {
+    loadCSS(`${window.hlx.codeBasePath}${path}`);
+  });
 }
 
 /**
@@ -539,10 +547,10 @@ export class Brick extends HTMLElement {
       }
     }
 
-    const slots = this.querySelectorAll('[slot="item"]');
+    const items = this.querySelectorAll(':scope > div');
 
     if (options.mapValues) {
-      slots.forEach((element) => {
+      items.forEach((element) => {
         const [key, value] = element.children;
         this.values.set(key.innerText, value.innerHTML);
       });
