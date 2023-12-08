@@ -25,10 +25,14 @@
       border-radius: 0;
       height: 92px;
       opacity: 0.35;
+      transition: opacity 0.2s ease-in-out;
     }
 
     .aem-testimonials__tabs__button[aria-selected='true'] {
       border-bottom-color: #000;
+    }
+
+    .aem-testimonials__tabs__button:hover {
       opacity: 1;
     }
 
@@ -45,10 +49,17 @@
       flex-wrap: wrap;
       gap: 30px;
       align-items: center;
+      margin-top: var(--spacing-s);
     }
 
     .aem-testimonails__content__image {
-      width: 50%;
+      width: 100%;
+    }
+
+    @media screen and (min-width: 768px) {
+      .aem-testimonails__content__image {
+        width: 50%;
+      }
     }
 
     .aem-testimonails__content__image img {
