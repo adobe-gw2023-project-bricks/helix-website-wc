@@ -335,8 +335,30 @@ function setup() {
 
 /** Eager load first image */
 function loadEagerImages() {
-  const hero = document.querySelector('main img');
-  hero?.setAttribute('loading', 'eager');
+  // Query for the first <picture> element in the DOM
+  const pictureElement = document.querySelector('picture');
+
+  if (!pictureElement) return;
+
+  function getSrcSet() {
+    const sourceElement = Array.from(pictureElement.querySelectorAll('source')).find((source) => {
+      const mediaQuery = source.getAttribute('media');
+      return !mediaQuery || window.matchMedia(mediaQuery).matches;
+    });
+
+    const source = (sourceElement && sourceElement.getAttribute('srcset')) || pictureElement.querySelector('img').getAttribute('src');
+
+    return source;
+  }
+
+  // Create the link element
+  const linkElement = document.createElement('link');
+  linkElement.rel = 'preload';
+  linkElement.as = 'image';
+  linkElement.href = getSrcSet();
+
+  // Append the link element to the head of the document
+  document.head.appendChild(linkElement);
 }
 
 function transformToBrick(block) {

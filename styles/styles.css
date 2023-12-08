@@ -25,8 +25,9 @@
 }
 
 :root {
-  --body-font-family: "Adobe Clean", adobe-clean, "Trebuchet MS", sans-serif;
-  --code-font-family: "Source Code Pro", source-code-pro, "Courier New", monospace;
+  --body-font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
+  --code-font-family: 'Source Code Pro', source-code-pro, 'Courier New',
+    monospace;
   --type-heading-all-weight: 700;
   --type-heading-xxxl-size: 44px;
   --type-heading-xxxl-lh: 1;
@@ -132,13 +133,28 @@
   --breadcrumb-height: 1px;
   --color-checkerboard-bg-border: rgb(214 213 213 / 40%);
   --color-checkerboard-bg-fill: transparent;
-  --checkerboard-background: linear-gradient( var(--color-checkerboard-bg-border) 1px, transparent 1px ), linear-gradient( 90deg, var(--color-checkerboard-bg-border) 1px, transparent 1px ), linear-gradient( 45deg, var(--color-checkerboard-bg-fill) 50%, var(--color-checkerboard-bg-fill) 51% );
+  --checkerboard-background: linear-gradient(
+      var(--color-checkerboard-bg-border) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      var(--color-checkerboard-bg-border) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      45deg,
+      var(--color-checkerboard-bg-fill) 50%,
+      var(--color-checkerboard-bg-fill) 51%
+    );
   --checkerboard-background-size: clamp(15px, 3vw, 25px) clamp(15px, 3vw, 25px);
   --sidebar-z-index: 9998;
   --nav-z-index: 9999;
   --circular-icon-tag-size: 30px;
   --circular-number-tag-size: 60px;
-  --image-filter-drop-shadow-small: drop-shadow( 10px 25px 50px rgba(0 0 0 / 10%) );
+  --image-filter-drop-shadow-small: drop-shadow(
+    10px 25px 50px rgba(0 0 0 / 10%)
+  );
   --side-navigation-bar-gap: var(--spacing-s);
   --cubic-bezier-1: cubic-bezier(0.802, 0, 0.2, 1);
   --cubic-bezier-2: cubic-bezier(0.23, 1, 0.32, 1);
@@ -200,9 +216,9 @@
 
     /* guide-templates */
     --side-navigation-bar-gap: clamp(
-        var(--spacing-m),
-        3.2vw,
-        var(--spacing-ml)
+      var(--spacing-m),
+      3.2vw,
+      var(--spacing-ml)
     );
   }
 }
@@ -226,34 +242,16 @@
 }
 
 body {
+  background-color: var(--background-color);
+  color: var(--text-color);
   font-family: var(--body-font-family);
-  margin: 0;
   font-size: var(--type-body-l-size);
   line-height: var(--type-body-l-lh);
+  margin: 0;
+  padding: 0;
 }
 
 /* Use opacity over display: none to let the browser download LCP image assets */
 body:not([data-status='loaded']) {
   display: none;
 }
-
-header {
-  height: var(--nav-height);
-}
-
-main .section {
-  padding: 4rem 0;
-}
-
-@media (width >= 600px) {
-  .section {
-    padding: 64px 32px;
-  }
-}
-
-/* section metadata */
-main .section.highlight {
-  background: var(--highlight-gradient);
-  color: white;
-}
-
