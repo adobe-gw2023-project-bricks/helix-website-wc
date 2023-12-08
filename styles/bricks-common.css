@@ -674,6 +674,13 @@ a.button.black-border:any-link::before {
   opacity: 0;
 }
 
+.in-view,
+.in-view .fade-in,
+.in-view .fade-up,
+.in-view .fade-left,
+.in-view .item-fade-in,
+.in-view .item-fade-up,
+.in-view .item-fade-left,
 :host(.in-view),
 :host(.in-view) .fade-in,
 :host(.in-view) .fade-up,
