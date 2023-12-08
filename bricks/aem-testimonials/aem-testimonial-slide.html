@@ -1,0 +1,35 @@
+<template>
+  <style>
+    .tabpanel {
+      display: flex;
+    }
+
+    .titles p:first-of-type {
+      font-weight: 700;
+      font-size: 0.83em;
+      margin-bottom: 0.25em;
+    }
+  </style>
+
+
+  <div id="tabs-panel-0-tab-0" role="tabpanel" class="tabpanel testimonial active" tabindex="0" aria-labelledby="tabs-0-tab-0">
+    <div class="image-side">
+      <slot name="side-image"></slot>
+    </div>
+    <div class="testimonial-info">
+      <p class="testimonial-quote">
+        <slot name="testimonial-quote"></slot>
+      </p>
+      <div class="customer-info">
+        <picture></picture>
+        <div class="titles">
+          <slot name="titles"></slot>
+        </div>
+        <slot name="site-link"></slot>
+      </div>
+      <ul>
+        <slot name="testimonial-stats"></slot>
+      </ul>
+    </div>
+  </div>
+</template>

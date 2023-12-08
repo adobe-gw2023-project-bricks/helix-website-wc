@@ -1,17 +1,10 @@
-/**
- * Load HTML Template
- * @param {string} name The name of the template
- * @returns {Promise<HTMLTemplateElement>} The template
- */
-async function loadTemplate(name) {
-  const href = `${window.hlx.codeBasePath}/bricks/${name}/${name}.html`;
+export async function loadTemplate(path, id) {
+  const href = `${window.hlx.codeBasePath}${path}`;
 
   return new Promise((resolve, reject) => {
-    const id = href.split('/').pop().split('.').shift();
+    const template = document.querySelector(`template[id="${id}"]`);
 
-    const brick = document.querySelector(`template[id="${id}"]`);
-
-    if (brick) {
+    if (template) {
       resolve();
       return;
     }
@@ -38,6 +31,18 @@ async function loadTemplate(name) {
       }
     });
   });
+}
+
+/**
+ * Load HTML Template
+ * @returns {Promise<HTMLTemplateElement>} The template
+ * @param brickName Name of the brick to load template from
+ */
+async function loadBrickTemplate(brickName) {
+  const path = `/bricks/${brickName}/${brickName}.html`;
+  const id = path.split('/').pop().split('.').shift();
+
+  await loadTemplate(path, id);
 }
 
 /**
@@ -441,7 +446,7 @@ export default async function initialize() {
   const [css, loadedComponents] = await Promise.allSettled([
     getCommonBrickStyles(),
     Promise.allSettled([...components].map(loadBrick)),
-    Promise.allSettled([...templates].map(loadTemplate)),
+    Promise.allSettled([...templates].map(loadBrickTemplate)),
   ]);
 
   // Decorate Root
