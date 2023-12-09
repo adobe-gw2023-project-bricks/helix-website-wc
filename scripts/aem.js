@@ -117,62 +117,6 @@ async function loadFonts() {
 }
 
 /**
- * Add <img> for icon, prefixed with codeBasePath and optional prefix.
- * @param {span} [element] span element with icon classes
- */
-function decorateIcon(elem) {
-  if (elem.dataset.decorated) return;
-
-  const iconName = Array.from(elem.classList)
-    .find((c) => c.startsWith('icon-'))
-    .substring(5);
-  const img = document.createElement('img');
-  img.dataset.iconName = iconName;
-  img.src = `${window.hlx.codeBasePath}/icons/${iconName}.svg`;
-  img.loading = 'lazy';
-  elem.append(img);
-
-  elem.dataset.decorated = true;
-}
-
-/**
- * Decorates paragraphs containing a single link as buttons.
- * @param {Element} element container element
- */
-function decorateButton(a) {
-  if (a.dataset.decorated) return;
-
-  a.title = a.title || a.textContent;
-
-  if (a.href !== a.textContent) {
-    const up = a.parentElement;
-    const twoup = a.parentElement.parentElement;
-
-    if (a.querySelector('img')) return;
-
-    if (
-      up.childNodes.length === 1
-      && up.tagName === 'STRONG'
-      && twoup.childNodes.length === 1
-      && twoup.tagName === 'P'
-    ) {
-      a.className = 'button primary';
-    }
-
-    if (
-      up.childNodes.length === 1
-      && up.tagName === 'EM'
-      && twoup.childNodes.length === 1
-      && twoup.tagName === 'P'
-    ) {
-      a.className = 'button secondary';
-    }
-
-    a.dataset.decorated = true;
-  }
-}
-
-/**
  * Builds hero brick and prepends to main in a new section.
  * @param {Element} main The container element
  */
@@ -584,17 +528,5 @@ export class Brick extends HTMLElement {
     root.innerHTML = this.innerHTML;
     this.root = root.cloneNode(true);
     this.innerHTML = '';
-
-    // Set up MutationObserver to detect changes in child nodes
-    this.observer = new MutationObserver((event) => {
-      event.forEach((mutation) => {
-        mutation.addedNodes?.forEach((node) => {
-          node.querySelectorAll?.('.icon:not([data-decorated])').forEach(decorateIcon);
-          node.querySelectorAll?.('a:not([data-decorated])').forEach(decorateButton);
-        });
-      });
-    });
-
-    this.observer.observe(this.shadowRoot, { childList: true, subtree: true });
   }
 }
