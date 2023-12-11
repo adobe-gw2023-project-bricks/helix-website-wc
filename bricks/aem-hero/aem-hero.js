@@ -1,4 +1,4 @@
-import HtmlTemplateBrick from '../../scripts/html-template-brick.js';
+import { HtmlTemplateBrick } from '../../scripts/aem.js';
 
 // Best case this class can be empty, but if you need
 // some additional processing that cannot be expressed
