@@ -2,7 +2,7 @@ import HtmlTemplateBrick from '../../scripts/html-template-brick.js';
 
 // Best case this class can be empty, but if you need
 // some additional processing that cannot be expressed
-// with data-aem-selector, this is the place
+// with data-aem-inject, this is the place
 export default class Hero extends HtmlTemplateBrick {
   /** Inject content that cannot be easily expressed by CSS selectors */
   injectMoreContent(newContent) {
@@ -15,8 +15,6 @@ export default class Hero extends HtmlTemplateBrick {
 
   /** Needed to add button classes */
   connectedCallback() {
-    super.connectedCallback();
-
     // setup our "button"
     this.root.querySelector('a')?.classList.add('button', 'primary', 'large');
   }

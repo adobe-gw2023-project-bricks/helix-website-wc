@@ -87,6 +87,22 @@ async function loadCSS(href) {
   });
 }
 
+/** Loads a JS file
+ * @param {string} src URL to the JS file
+ *
+ */
+async function loadJS(src) {
+  return new Promise((resolve, reject) => {
+    import(src)
+      .then(resolve)
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.warn(`Failed to load script ${src}`, error);
+        reject(error);
+      });
+  });
+}
+
 /**
  * load fonts.css and set a session storage flag
  */
@@ -97,62 +113,6 @@ async function loadFonts() {
     if (!window.location.hostname.includes('localhost')) { sessionStorage.setItem('fonts-loaded', 'true'); }
   } catch (e) {
     // do nothing
-  }
-}
-
-/**
- * Add <img> for icon, prefixed with codeBasePath and optional prefix.
- * @param {span} [element] span element with icon classes
- */
-function decorateIcon(elem) {
-  if (elem.dataset.decorated) return;
-
-  const iconName = Array.from(elem.classList)
-    .find((c) => c.startsWith('icon-'))
-    .substring(5);
-  const img = document.createElement('img');
-  img.dataset.iconName = iconName;
-  img.src = `${window.hlx.codeBasePath}/icons/${iconName}.svg`;
-  img.loading = 'lazy';
-  elem.append(img);
-
-  elem.dataset.decorated = true;
-}
-
-/**
- * Decorates paragraphs containing a single link as buttons.
- * @param {Element} element container element
- */
-function decorateButton(a) {
-  if (a.dataset.decorated) return;
-
-  a.title = a.title || a.textContent;
-
-  if (a.href !== a.textContent) {
-    const up = a.parentElement;
-    const twoup = a.parentElement.parentElement;
-
-    if (a.querySelector('img')) return;
-
-    if (
-      up.childNodes.length === 1
-      && up.tagName === 'STRONG'
-      && twoup.childNodes.length === 1
-      && twoup.tagName === 'P'
-    ) {
-      a.className = 'button primary';
-    }
-
-    if (
-      up.childNodes.length === 1
-      && up.tagName === 'EM'
-      && twoup.childNodes.length === 1
-      && twoup.tagName === 'P'
-    ) {
-      a.className = 'button secondary';
-    }
-
-    a.dataset.decorated = true;
   }
 }
 
@@ -474,6 +434,8 @@ export default async function initialize() {
     getCommonBrickStyles(),
     Promise.allSettled([...components].map(loadBrick)),
     Promise.allSettled([...templates].map(loadTemplate)),
+    Promise.allSettled(config.scripts?.filter((s) => s.eager).map(({ path }) => loadJS(`${window.hlx.codeBasePath}${path}`)) || []),
+    Promise.allSettled(config.css?.filter((s) => s.eager).map(({ path }) => loadCSS(`${window.hlx.codeBasePath}${path}`)) || []),
   ]);
 
   // Decorate Root
@@ -514,8 +476,13 @@ export default async function initialize() {
     sampleRUM('error', { source: event.filename, target: event.lineno });
   });
 
+  // Load lazy js from config
+  config.scripts?.filter((s) => !s.eager).forEach(({ path }) => {
+    loadJS(`${window.hlx.codeBasePath}${path}`);
+  });
+
   // Load lazy css from config
-  config.css?.forEach(({ path }) => {
+  config.css?.filter((s) => !s.eager).forEach(({ path }) => {
     loadCSS(`${window.hlx.codeBasePath}${path}`);
   });
 }
@@ -561,17 +528,5 @@ export class Brick extends HTMLElement {
     root.innerHTML = this.innerHTML;
     this.root = root.cloneNode(true);
     this.innerHTML = '';
-
-    // Set up MutationObserver to detect changes in child nodes
-    this.observer = new MutationObserver((event) => {
-      event.forEach((mutation) => {
-        mutation.addedNodes?.forEach((node) => {
-          node.querySelectorAll?.('.icon:not([data-decorated])').forEach(decorateIcon);
-          node.querySelectorAll?.('a:not([data-decorated])').forEach(decorateButton);
-        });
-      });
-    });
-
-    this.observer.observe(this.shadowRoot, { childList: true, subtree: true });
   }
 }
