@@ -1,3 +1,3 @@
-import HtmlTemplateBrick from '../../scripts/html-template-brick.js';
+import { HtmlTemplateBrick } from '../../scripts/aem.js';
 
 export default class Testimonials extends HtmlTemplateBrick { }
