@@ -644,3 +644,110 @@ a.button.black-border:any-link::before {
   text-align: center;
   z-index: 2;
 }
+
+/* ---- scroll in-view animation ---- */
+.fade-in,
+.item-fade-in {
+  transition: var(--fade-transition);
+  opacity: 0;
+  will-change: opacity;
+}
+
+.fade-up,
+.item-fade-up {
+  transition: var(--fade-transition);
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.fade-left,
+.item-fade-left {
+  transition: var(--fade-transition);
+  transform: translateX(30px);
+  opacity: 0;
+}
+
+.fade-right,
+.item-fade-left {
+  transition: var(--fade-transition);
+  transform: translateX(-30px);
+  opacity: 0;
+}
+
+.in-view,
+.in-view .fade-in,
+.in-view .fade-up,
+.in-view .fade-left,
+.in-view .item-fade-in,
+.in-view .item-fade-up,
+.in-view .item-fade-left,
+:host(.in-view),
+:host(.in-view) .fade-in,
+:host(.in-view) .fade-up,
+:host(.in-view) .fade-left,
+:host(.in-view) .item-fade-in,
+:host(.in-view) .item-fade-up,
+:host(.in-view) .item-fade-left {
+  transform: none;
+  opacity: 1;
+}
+
+/* slide up text */
+.slide-reveal-wrapper {
+  overflow: hidden;
+
+  /* prevent bottom text, like `g` hidden by overflow-hidden */
+  padding-bottom: 4px;
+  margin-bottom: -4px;
+}
+
+.slide-reveal-up {
+  transform: translateY(102%);
+  transition: var(--slide-text-transition);
+}
+
+.slide-reveal-up-slow {
+  transform: translateY(102%);
+  transition: var(--slide-reveal-transition-slow);
+}
+
+:host(.in-view) .slide-reveal-up,
+:host(.in-view) .slide-reveal-up-slow {
+  transform: none;
+}
+
+/* animation: text fade & scale down */
+.text-main-reveal {
+  color: var(--color-black);
+  opacity: 0;
+}
+
+/* active */
+:host(.in-view) .text-main-reveal {
+  animation: main-reveal 0.8s forwards var(--cubic-bezier-1);
+}
+
+@media screen and (width >= 768px) {
+  :host(.in-view) .text-main-reveal {
+    animation: main-reveal 1s forwards var(--cubic-bezier-1);
+  }
+}
+
+@keyframes main-reveal {
+  0%,
+  10% {
+    opacity: 0;
+    transform: scale(1.5) translateZ(0);
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateZ(0);
+  }
+}
+
+/* -------------- Utility Classes Ends -------------- */

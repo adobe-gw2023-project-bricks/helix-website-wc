@@ -1,21 +1,5 @@
 import { Brick } from '../../scripts/aem.js';
-
-function createTag(tag, attributes, html) {
-  const el = document.createElement(tag);
-  if (html) {
-    if (html instanceof HTMLElement) {
-      el.append(html);
-    } else {
-      el.insertAdjacentHTML('beforeend', html);
-    }
-  }
-  if (attributes) {
-    Object.keys(attributes).forEach((key) => {
-      el.setAttribute(key, attributes[key]);
-    });
-  }
-  return el;
-}
+import { addInViewAnimationToMultipleElements, createTag } from '../../scripts/helpers.js';
 
 export default class LogoWall extends Brick {
   connectedCallback() {
@@ -76,5 +60,18 @@ export default class LogoWall extends Brick {
     });
 
     slot.append(titles, logoWallList);
+
+    if (this.classList.contains('inview-animation')) {
+      addInViewAnimationToMultipleElements([
+        {
+          selector: 'h1,h2,h3,h4,h5,h6',
+          animatedClass: 'slide-reveal-up',
+        },
+        {
+          selector: 'ul',
+          animatedClass: 'fade-up',
+        },
+      ], slot, this, 0.4);
+    }
   }
 }

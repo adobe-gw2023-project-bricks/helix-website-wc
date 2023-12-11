@@ -1,5 +1,26 @@
 import { Brick } from '../../scripts/aem.js';
 
+function addBlockLevelInViewAnimation(main) {
+  const observerOptions = {
+    threshold: 0.1,
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  // support block level animation as well
+  const inviewTriggerClassList = '.fade-up, .fade-in, .fade-left, .fade-right';
+  main.querySelectorAll(inviewTriggerClassList).forEach((section) => {
+    observer.observe(section);
+  });
+}
+
 export default class Root extends Brick {
   async connectedCallback() {
     // Main Sections
@@ -26,6 +47,8 @@ export default class Root extends Brick {
       wrappers.forEach((wrapper) => section.append(wrapper));
       section.classList.add('section');
     });
+
+    addBlockLevelInViewAnimation(main);
 
     // Set up MutationObserver to detect changes in child node
     this.observer = new MutationObserver((event) => {
